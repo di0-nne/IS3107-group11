@@ -7,6 +7,7 @@ Running the backend
 ```bash
 cd backend
 ```
+### You only need to do the following once when you first pull
 
 1. create a venv
 ```bash
@@ -23,12 +24,43 @@ source venv/bin/activate
 pip install -r requirments.txt
 ```
 
-4. run the backend
+### To start Airflow
+
+1. Open a terminal in the backend directory, make sure venv is activated 
+```bash
+cd backend
+source venv/bin/activate
+```
+
+2. Startup the airflow standalone
+```bash
+airflow standalone
+```
+
+3. Access on browser, password in telegram
+```bash
+localhost:8080
+```
+
+4. Deactivate when done
+```bash
+deactivate
+```
+
+
+### To start the backend and test the endpoints
+1. Open a NEW terminal in the backend directory, make sure venv is activated 
+```bash
+cd backend
+source venv/bin/activate
+```
+
+2. run the backend
 ```bash
 uvicorn app.main:app --reload
 ```
 
-5. open the endpoint interface in browser
+3. open the endpoint interface in browser
 ```bash
 http://127.0.0.1:8000/docs
 ```
