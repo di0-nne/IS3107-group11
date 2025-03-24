@@ -38,3 +38,51 @@
 [2025-03-24T21:55:27.889+0800] {logging_mixin.py:190} INFO - [2025-03-24T21:55:27.889+0800] {dag.py:3239} INFO - Sync 1 DAGs
 [2025-03-24T21:55:27.893+0800] {logging_mixin.py:190} INFO - [2025-03-24T21:55:27.893+0800] {dag.py:4180} INFO - Setting next_dagrun for example_sensors to None, run_after=None
 [2025-03-24T21:55:27.923+0800] {processor.py:208} INFO - Processing /Users/dionneleow/IS3107/IS3107-group11/backend/venv/lib/python3.12/site-packages/airflow/example_dags/example_sensors.py took 0.083 seconds
+[2025-03-24T21:57:45.586+0800] {processor.py:186} INFO - Started process (PID=66555) to work on /Users/dionneleow/IS3107/IS3107-group11/backend/venv/lib/python3.12/site-packages/airflow/example_dags/example_sensors.py
+[2025-03-24T21:57:45.587+0800] {processor.py:914} INFO - Processing file /Users/dionneleow/IS3107/IS3107-group11/backend/venv/lib/python3.12/site-packages/airflow/example_dags/example_sensors.py for tasks to queue
+[2025-03-24T21:57:45.587+0800] {logging_mixin.py:190} INFO - [2025-03-24T21:57:45.587+0800] {dagbag.py:588} INFO - Filling up the DagBag from /Users/dionneleow/IS3107/IS3107-group11/backend/venv/lib/python3.12/site-packages/airflow/example_dags/example_sensors.py
+[2025-03-24T21:57:45.606+0800] {processor.py:925} INFO - DAG(s) 'example_sensors' retrieved from /Users/dionneleow/IS3107/IS3107-group11/backend/venv/lib/python3.12/site-packages/airflow/example_dags/example_sensors.py
+[2025-03-24T21:57:45.641+0800] {logging_mixin.py:190} INFO - [2025-03-24T21:57:45.641+0800] {workday.py:41} WARNING - Could not import pandas. Holidays will not be considered.
+[2025-03-24T21:57:45.651+0800] {logging_mixin.py:190} INFO - [2025-03-24T21:57:45.651+0800] {dag.py:3239} INFO - Sync 1 DAGs
+[2025-03-24T21:57:45.656+0800] {logging_mixin.py:190} INFO - [2025-03-24T21:57:45.656+0800] {dag.py:4180} INFO - Setting next_dagrun for example_sensors to None, run_after=None
+[2025-03-24T21:57:45.693+0800] {processor.py:208} INFO - Processing /Users/dionneleow/IS3107/IS3107-group11/backend/venv/lib/python3.12/site-packages/airflow/example_dags/example_sensors.py took 0.109 seconds
+[2025-03-24T21:59:56.444+0800] {processor.py:186} INFO - Started process (PID=67252) to work on /Users/dionneleow/IS3107/IS3107-group11/backend/venv/lib/python3.12/site-packages/airflow/example_dags/example_sensors.py
+[2025-03-24T21:59:56.445+0800] {processor.py:914} INFO - Processing file /Users/dionneleow/IS3107/IS3107-group11/backend/venv/lib/python3.12/site-packages/airflow/example_dags/example_sensors.py for tasks to queue
+[2025-03-24T21:59:56.445+0800] {logging_mixin.py:190} INFO - [2025-03-24T21:59:56.445+0800] {dagbag.py:588} INFO - Filling up the DagBag from /Users/dionneleow/IS3107/IS3107-group11/backend/venv/lib/python3.12/site-packages/airflow/example_dags/example_sensors.py
+[2025-03-24T21:59:56.452+0800] {processor.py:925} INFO - DAG(s) 'example_sensors' retrieved from /Users/dionneleow/IS3107/IS3107-group11/backend/venv/lib/python3.12/site-packages/airflow/example_dags/example_sensors.py
+[2025-03-24T21:59:56.481+0800] {logging_mixin.py:190} INFO - [2025-03-24T21:59:56.481+0800] {workday.py:41} WARNING - Could not import pandas. Holidays will not be considered.
+[2025-03-24T21:59:56.491+0800] {logging_mixin.py:190} INFO - [2025-03-24T21:59:56.491+0800] {dag.py:3239} INFO - Sync 1 DAGs
+[2025-03-24T21:59:56.495+0800] {logging_mixin.py:190} INFO - [2025-03-24T21:59:56.495+0800] {dag.py:4180} INFO - Setting next_dagrun for example_sensors to None, run_after=None
+[2025-03-24T21:59:56.524+0800] {processor.py:208} INFO - Processing /Users/dionneleow/IS3107/IS3107-group11/backend/venv/lib/python3.12/site-packages/airflow/example_dags/example_sensors.py took 0.081 seconds
+[2025-03-24T22:02:03.966+0800] {processor.py:186} INFO - Started process (PID=68022) to work on /Users/dionneleow/IS3107/IS3107-group11/backend/venv/lib/python3.12/site-packages/airflow/example_dags/example_sensors.py
+[2025-03-24T22:02:03.967+0800] {processor.py:914} INFO - Processing file /Users/dionneleow/IS3107/IS3107-group11/backend/venv/lib/python3.12/site-packages/airflow/example_dags/example_sensors.py for tasks to queue
+[2025-03-24T22:02:03.968+0800] {logging_mixin.py:190} INFO - [2025-03-24T22:02:03.968+0800] {dagbag.py:588} INFO - Filling up the DagBag from /Users/dionneleow/IS3107/IS3107-group11/backend/venv/lib/python3.12/site-packages/airflow/example_dags/example_sensors.py
+[2025-03-24T22:02:03.975+0800] {processor.py:925} INFO - DAG(s) 'example_sensors' retrieved from /Users/dionneleow/IS3107/IS3107-group11/backend/venv/lib/python3.12/site-packages/airflow/example_dags/example_sensors.py
+[2025-03-24T22:02:04.005+0800] {logging_mixin.py:190} INFO - [2025-03-24T22:02:04.005+0800] {workday.py:41} WARNING - Could not import pandas. Holidays will not be considered.
+[2025-03-24T22:02:04.015+0800] {logging_mixin.py:190} INFO - [2025-03-24T22:02:04.015+0800] {dag.py:3239} INFO - Sync 1 DAGs
+[2025-03-24T22:02:04.019+0800] {logging_mixin.py:190} INFO - [2025-03-24T22:02:04.019+0800] {dag.py:4180} INFO - Setting next_dagrun for example_sensors to None, run_after=None
+[2025-03-24T22:02:04.050+0800] {processor.py:208} INFO - Processing /Users/dionneleow/IS3107/IS3107-group11/backend/venv/lib/python3.12/site-packages/airflow/example_dags/example_sensors.py took 0.085 seconds
+[2025-03-24T22:04:18.350+0800] {processor.py:186} INFO - Started process (PID=68854) to work on /Users/dionneleow/IS3107/IS3107-group11/backend/venv/lib/python3.12/site-packages/airflow/example_dags/example_sensors.py
+[2025-03-24T22:04:18.350+0800] {processor.py:914} INFO - Processing file /Users/dionneleow/IS3107/IS3107-group11/backend/venv/lib/python3.12/site-packages/airflow/example_dags/example_sensors.py for tasks to queue
+[2025-03-24T22:04:18.351+0800] {logging_mixin.py:190} INFO - [2025-03-24T22:04:18.351+0800] {dagbag.py:588} INFO - Filling up the DagBag from /Users/dionneleow/IS3107/IS3107-group11/backend/venv/lib/python3.12/site-packages/airflow/example_dags/example_sensors.py
+[2025-03-24T22:04:18.358+0800] {processor.py:925} INFO - DAG(s) 'example_sensors' retrieved from /Users/dionneleow/IS3107/IS3107-group11/backend/venv/lib/python3.12/site-packages/airflow/example_dags/example_sensors.py
+[2025-03-24T22:04:18.388+0800] {logging_mixin.py:190} INFO - [2025-03-24T22:04:18.388+0800] {workday.py:41} WARNING - Could not import pandas. Holidays will not be considered.
+[2025-03-24T22:04:18.398+0800] {logging_mixin.py:190} INFO - [2025-03-24T22:04:18.397+0800] {dag.py:3239} INFO - Sync 1 DAGs
+[2025-03-24T22:04:18.403+0800] {logging_mixin.py:190} INFO - [2025-03-24T22:04:18.403+0800] {dag.py:4180} INFO - Setting next_dagrun for example_sensors to None, run_after=None
+[2025-03-24T22:04:18.435+0800] {processor.py:208} INFO - Processing /Users/dionneleow/IS3107/IS3107-group11/backend/venv/lib/python3.12/site-packages/airflow/example_dags/example_sensors.py took 0.087 seconds
+[2025-03-24T22:06:36.637+0800] {processor.py:186} INFO - Started process (PID=69551) to work on /Users/dionneleow/IS3107/IS3107-group11/backend/venv/lib/python3.12/site-packages/airflow/example_dags/example_sensors.py
+[2025-03-24T22:06:36.637+0800] {processor.py:914} INFO - Processing file /Users/dionneleow/IS3107/IS3107-group11/backend/venv/lib/python3.12/site-packages/airflow/example_dags/example_sensors.py for tasks to queue
+[2025-03-24T22:06:36.638+0800] {logging_mixin.py:190} INFO - [2025-03-24T22:06:36.638+0800] {dagbag.py:588} INFO - Filling up the DagBag from /Users/dionneleow/IS3107/IS3107-group11/backend/venv/lib/python3.12/site-packages/airflow/example_dags/example_sensors.py
+[2025-03-24T22:06:36.645+0800] {processor.py:925} INFO - DAG(s) 'example_sensors' retrieved from /Users/dionneleow/IS3107/IS3107-group11/backend/venv/lib/python3.12/site-packages/airflow/example_dags/example_sensors.py
+[2025-03-24T22:06:36.678+0800] {logging_mixin.py:190} INFO - [2025-03-24T22:06:36.678+0800] {workday.py:41} WARNING - Could not import pandas. Holidays will not be considered.
+[2025-03-24T22:06:36.689+0800] {logging_mixin.py:190} INFO - [2025-03-24T22:06:36.689+0800] {dag.py:3239} INFO - Sync 1 DAGs
+[2025-03-24T22:06:36.696+0800] {logging_mixin.py:190} INFO - [2025-03-24T22:06:36.696+0800] {dag.py:4180} INFO - Setting next_dagrun for example_sensors to None, run_after=None
+[2025-03-24T22:06:36.731+0800] {processor.py:208} INFO - Processing /Users/dionneleow/IS3107/IS3107-group11/backend/venv/lib/python3.12/site-packages/airflow/example_dags/example_sensors.py took 0.096 seconds
+[2025-03-24T22:08:59.187+0800] {processor.py:186} INFO - Started process (PID=70333) to work on /Users/dionneleow/IS3107/IS3107-group11/backend/venv/lib/python3.12/site-packages/airflow/example_dags/example_sensors.py
+[2025-03-24T22:08:59.188+0800] {processor.py:914} INFO - Processing file /Users/dionneleow/IS3107/IS3107-group11/backend/venv/lib/python3.12/site-packages/airflow/example_dags/example_sensors.py for tasks to queue
+[2025-03-24T22:08:59.188+0800] {logging_mixin.py:190} INFO - [2025-03-24T22:08:59.188+0800] {dagbag.py:588} INFO - Filling up the DagBag from /Users/dionneleow/IS3107/IS3107-group11/backend/venv/lib/python3.12/site-packages/airflow/example_dags/example_sensors.py
+[2025-03-24T22:08:59.195+0800] {processor.py:925} INFO - DAG(s) 'example_sensors' retrieved from /Users/dionneleow/IS3107/IS3107-group11/backend/venv/lib/python3.12/site-packages/airflow/example_dags/example_sensors.py
+[2025-03-24T22:08:59.223+0800] {logging_mixin.py:190} INFO - [2025-03-24T22:08:59.223+0800] {workday.py:41} WARNING - Could not import pandas. Holidays will not be considered.
+[2025-03-24T22:08:59.232+0800] {logging_mixin.py:190} INFO - [2025-03-24T22:08:59.232+0800] {dag.py:3239} INFO - Sync 1 DAGs
+[2025-03-24T22:08:59.236+0800] {logging_mixin.py:190} INFO - [2025-03-24T22:08:59.236+0800] {dag.py:4180} INFO - Setting next_dagrun for example_sensors to None, run_after=None
+[2025-03-24T22:08:59.265+0800] {processor.py:208} INFO - Processing /Users/dionneleow/IS3107/IS3107-group11/backend/venv/lib/python3.12/site-packages/airflow/example_dags/example_sensors.py took 0.079 seconds
