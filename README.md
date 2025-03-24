@@ -3,9 +3,6 @@ IS3107 Group 11
 
 # Backend
 
-Running the backend
-```bash
-cd backend
 ```
 ### You only need to do the following once when you first pull
 
@@ -48,7 +45,7 @@ deactivate
 ```
 
 
-### To start the backend and test the endpoints
+### To run the backend and test the endpoints
 1. Open a NEW terminal in the backend directory, make sure venv is activated 
 ```bash
 cd backend
@@ -57,7 +54,7 @@ source venv/bin/activate
 
 2. run the backend
 ```bash
-uvicorn app.main:app --reload
+uvicorn main:app --reload
 ```
 
 3. open the endpoint interface in browser
