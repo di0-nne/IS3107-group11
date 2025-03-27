@@ -69,3 +69,38 @@
 [2025-03-24T22:07:59.822+0800] {logging_mixin.py:190} INFO - [2025-03-24T22:07:59.822+0800] {dag.py:3239} INFO - Sync 1 DAGs
 [2025-03-24T22:07:59.825+0800] {logging_mixin.py:190} INFO - [2025-03-24T22:07:59.825+0800] {dag.py:4180} INFO - Setting next_dagrun for example_complex to None, run_after=None
 [2025-03-24T22:07:59.831+0800] {processor.py:208} INFO - Processing /Users/dionneleow/IS3107/IS3107-group11/backend/venv/lib/python3.12/site-packages/airflow/example_dags/example_complex.py took 0.052 seconds
+[2025-03-24T22:10:22.959+0800] {processor.py:186} INFO - Started process (PID=70855) to work on /Users/dionneleow/IS3107/IS3107-group11/backend/venv/lib/python3.12/site-packages/airflow/example_dags/example_complex.py
+[2025-03-24T22:10:22.960+0800] {processor.py:914} INFO - Processing file /Users/dionneleow/IS3107/IS3107-group11/backend/venv/lib/python3.12/site-packages/airflow/example_dags/example_complex.py for tasks to queue
+[2025-03-24T22:10:22.960+0800] {logging_mixin.py:190} INFO - [2025-03-24T22:10:22.960+0800] {dagbag.py:588} INFO - Filling up the DagBag from /Users/dionneleow/IS3107/IS3107-group11/backend/venv/lib/python3.12/site-packages/airflow/example_dags/example_complex.py
+[2025-03-24T22:10:22.965+0800] {processor.py:925} INFO - DAG(s) 'example_complex' retrieved from /Users/dionneleow/IS3107/IS3107-group11/backend/venv/lib/python3.12/site-packages/airflow/example_dags/example_complex.py
+[2025-03-24T22:10:22.999+0800] {logging_mixin.py:190} INFO - [2025-03-24T22:10:22.999+0800] {dag.py:3239} INFO - Sync 1 DAGs
+[2025-03-24T22:10:23.002+0800] {logging_mixin.py:190} INFO - [2025-03-24T22:10:23.002+0800] {dag.py:4180} INFO - Setting next_dagrun for example_complex to None, run_after=None
+[2025-03-24T22:10:23.008+0800] {processor.py:208} INFO - Processing /Users/dionneleow/IS3107/IS3107-group11/backend/venv/lib/python3.12/site-packages/airflow/example_dags/example_complex.py took 0.050 seconds
+[2025-03-24T22:12:39.161+0800] {processor.py:186} INFO - Started process (PID=71516) to work on /Users/dionneleow/IS3107/IS3107-group11/backend/venv/lib/python3.12/site-packages/airflow/example_dags/example_complex.py
+[2025-03-24T22:12:39.162+0800] {processor.py:914} INFO - Processing file /Users/dionneleow/IS3107/IS3107-group11/backend/venv/lib/python3.12/site-packages/airflow/example_dags/example_complex.py for tasks to queue
+[2025-03-24T22:12:39.162+0800] {logging_mixin.py:190} INFO - [2025-03-24T22:12:39.162+0800] {dagbag.py:588} INFO - Filling up the DagBag from /Users/dionneleow/IS3107/IS3107-group11/backend/venv/lib/python3.12/site-packages/airflow/example_dags/example_complex.py
+[2025-03-24T22:12:39.166+0800] {processor.py:925} INFO - DAG(s) 'example_complex' retrieved from /Users/dionneleow/IS3107/IS3107-group11/backend/venv/lib/python3.12/site-packages/airflow/example_dags/example_complex.py
+[2025-03-24T22:12:39.203+0800] {logging_mixin.py:190} INFO - [2025-03-24T22:12:39.203+0800] {dag.py:3239} INFO - Sync 1 DAGs
+[2025-03-24T22:12:39.206+0800] {logging_mixin.py:190} INFO - [2025-03-24T22:12:39.206+0800] {dag.py:4180} INFO - Setting next_dagrun for example_complex to None, run_after=None
+[2025-03-24T22:12:39.213+0800] {processor.py:208} INFO - Processing /Users/dionneleow/IS3107/IS3107-group11/backend/venv/lib/python3.12/site-packages/airflow/example_dags/example_complex.py took 0.053 seconds
+[2025-03-24T22:14:59.737+0800] {processor.py:186} INFO - Started process (PID=72366) to work on /Users/dionneleow/IS3107/IS3107-group11/backend/venv/lib/python3.12/site-packages/airflow/example_dags/example_complex.py
+[2025-03-24T22:14:59.738+0800] {processor.py:914} INFO - Processing file /Users/dionneleow/IS3107/IS3107-group11/backend/venv/lib/python3.12/site-packages/airflow/example_dags/example_complex.py for tasks to queue
+[2025-03-24T22:14:59.738+0800] {logging_mixin.py:190} INFO - [2025-03-24T22:14:59.738+0800] {dagbag.py:588} INFO - Filling up the DagBag from /Users/dionneleow/IS3107/IS3107-group11/backend/venv/lib/python3.12/site-packages/airflow/example_dags/example_complex.py
+[2025-03-24T22:14:59.742+0800] {processor.py:925} INFO - DAG(s) 'example_complex' retrieved from /Users/dionneleow/IS3107/IS3107-group11/backend/venv/lib/python3.12/site-packages/airflow/example_dags/example_complex.py
+[2025-03-24T22:14:59.780+0800] {logging_mixin.py:190} INFO - [2025-03-24T22:14:59.780+0800] {dag.py:3239} INFO - Sync 1 DAGs
+[2025-03-24T22:14:59.784+0800] {logging_mixin.py:190} INFO - [2025-03-24T22:14:59.783+0800] {dag.py:4180} INFO - Setting next_dagrun for example_complex to None, run_after=None
+[2025-03-24T22:14:59.792+0800] {processor.py:208} INFO - Processing /Users/dionneleow/IS3107/IS3107-group11/backend/venv/lib/python3.12/site-packages/airflow/example_dags/example_complex.py took 0.056 seconds
+[2025-03-24T22:17:23.081+0800] {processor.py:186} INFO - Started process (PID=73249) to work on /Users/dionneleow/IS3107/IS3107-group11/backend/venv/lib/python3.12/site-packages/airflow/example_dags/example_complex.py
+[2025-03-24T22:17:23.082+0800] {processor.py:914} INFO - Processing file /Users/dionneleow/IS3107/IS3107-group11/backend/venv/lib/python3.12/site-packages/airflow/example_dags/example_complex.py for tasks to queue
+[2025-03-24T22:17:23.083+0800] {logging_mixin.py:190} INFO - [2025-03-24T22:17:23.083+0800] {dagbag.py:588} INFO - Filling up the DagBag from /Users/dionneleow/IS3107/IS3107-group11/backend/venv/lib/python3.12/site-packages/airflow/example_dags/example_complex.py
+[2025-03-24T22:17:23.088+0800] {processor.py:925} INFO - DAG(s) 'example_complex' retrieved from /Users/dionneleow/IS3107/IS3107-group11/backend/venv/lib/python3.12/site-packages/airflow/example_dags/example_complex.py
+[2025-03-24T22:17:23.126+0800] {logging_mixin.py:190} INFO - [2025-03-24T22:17:23.126+0800] {dag.py:3239} INFO - Sync 1 DAGs
+[2025-03-24T22:17:23.131+0800] {logging_mixin.py:190} INFO - [2025-03-24T22:17:23.131+0800] {dag.py:4180} INFO - Setting next_dagrun for example_complex to None, run_after=None
+[2025-03-24T22:17:23.142+0800] {processor.py:208} INFO - Processing /Users/dionneleow/IS3107/IS3107-group11/backend/venv/lib/python3.12/site-packages/airflow/example_dags/example_complex.py took 0.062 seconds
+[2025-03-24T22:19:46.771+0800] {processor.py:186} INFO - Started process (PID=74026) to work on /Users/dionneleow/IS3107/IS3107-group11/backend/venv/lib/python3.12/site-packages/airflow/example_dags/example_complex.py
+[2025-03-24T22:19:46.771+0800] {processor.py:914} INFO - Processing file /Users/dionneleow/IS3107/IS3107-group11/backend/venv/lib/python3.12/site-packages/airflow/example_dags/example_complex.py for tasks to queue
+[2025-03-24T22:19:46.772+0800] {logging_mixin.py:190} INFO - [2025-03-24T22:19:46.772+0800] {dagbag.py:588} INFO - Filling up the DagBag from /Users/dionneleow/IS3107/IS3107-group11/backend/venv/lib/python3.12/site-packages/airflow/example_dags/example_complex.py
+[2025-03-24T22:19:46.777+0800] {processor.py:925} INFO - DAG(s) 'example_complex' retrieved from /Users/dionneleow/IS3107/IS3107-group11/backend/venv/lib/python3.12/site-packages/airflow/example_dags/example_complex.py
+[2025-03-24T22:19:46.822+0800] {logging_mixin.py:190} INFO - [2025-03-24T22:19:46.821+0800] {dag.py:3239} INFO - Sync 1 DAGs
+[2025-03-24T22:19:46.825+0800] {logging_mixin.py:190} INFO - [2025-03-24T22:19:46.825+0800] {dag.py:4180} INFO - Setting next_dagrun for example_complex to None, run_after=None
+[2025-03-24T22:19:46.835+0800] {processor.py:208} INFO - Processing /Users/dionneleow/IS3107/IS3107-group11/backend/venv/lib/python3.12/site-packages/airflow/example_dags/example_complex.py took 0.066 seconds
