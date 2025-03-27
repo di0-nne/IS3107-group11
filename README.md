@@ -3,7 +3,6 @@ IS3107 Group 11
 
 # Backend
 
-```
 ### You only need to do the following once when you first pull
 
 1. create a venv
