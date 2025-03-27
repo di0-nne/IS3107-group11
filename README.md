@@ -46,6 +46,7 @@ deactivate
 
 
 ### To run the backend and test the endpoints
+
 1. Open a NEW terminal in the backend directory, make sure venv is activated 
 ```bash
 cd backend
