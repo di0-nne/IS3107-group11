@@ -14,3 +14,8 @@ client = MongoClient(MONGO_URI)
 db = client['IS3107-GROUP11']
 
 hawker_centre_db = db['hawker_centre']
+cleaning_schedule_db = db['cleaning_schedule']
+hawker_stall_db = db['hawker_stall']
+opening_hours_db = db['opening_hours']
+reviews_db = db['reviews']
+user_history_db = db['user_history']
