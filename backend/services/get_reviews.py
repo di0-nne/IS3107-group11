@@ -3,14 +3,11 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from pymongo import MongoClient
-import time
-import pandas as pd 
 from bs4 import BeautifulSoup
+from database import *
+import pandas as pd 
+import time
 
-
-### Set paths
-mongo_link = "mongodb+srv://db_user:db_user123@cluster0.4e885.mongodb.net/?"
 
 ################################### extracting reviews ###################################
 
@@ -137,14 +134,11 @@ def get_all_reviews(df):
                     'author_url' : curr['link'],
                     'stall_id' : row.place_id,
                     'author' : i,
-                    'review' : curr['review'],
+                    'review_text' : curr['review'],
                     'rating' : curr['rating'],
                     'relative_time' : curr['relative_time']
                 }
                 temp = pd.concat([temp, pd.DataFrame([entry])], ignore_index=True)
 
             if not temp.empty:
-                client = MongoClient(mongo_link)
-                db = client["IS3107-GROUP11"]
-                collection = db["reviews"]
-                collection.insert_many(temp.to_dict(orient="records"))
+                reviews_db.insert_many(temp.to_dict(orient="records"))
