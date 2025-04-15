@@ -59,13 +59,11 @@ def get_reviews(Reviews) -> dict:
     return {
         "id": str(Reviews["_id"]),
         "author_url": Reviews["author_url"],
-        "author_name": Reviews["author_name"],
+        "author": Reviews["author"],
         "stall_id": Reviews["stall_id"],
-        "language": Reviews["language"],
         "rating": Reviews["rating"],
         "review_text": Reviews["review_text"],
-        "review_time": Reviews["review_time"],
-        "relative_time_description": Reviews["relative_time_description"]
+        "relative_time": Reviews["relative_time"]
     }
     
 def get_reviews_list(Reviews) -> list:

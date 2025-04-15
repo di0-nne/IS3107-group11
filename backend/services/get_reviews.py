@@ -134,7 +134,7 @@ def get_all_reviews(df):
                     'author_url' : curr['link'],
                     'stall_id' : row.place_id,
                     'author' : i,
-                    'review' : curr['review'],
+                    'review_text' : curr['review'],
                     'rating' : curr['rating'],
                     'relative_time' : curr['relative_time']
                 }
