@@ -158,7 +158,7 @@ def get_hawkerstalls_df(hawker_df):
                 r = "NIL"
             result_df.loc[len(result_df)] = {
                 'name': details['name'],
-                'place_id': details['place_id'],
+                'stall_id': details['place_id'],
                 'address': details['address'],
                 'business_status': details['business_status'],
                 'url':details['url'],

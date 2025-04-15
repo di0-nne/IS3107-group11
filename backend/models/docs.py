@@ -38,13 +38,11 @@ class Opening_Hours(BaseModel):
     
 class Reviews(BaseModel):
     author_url: str
-    author_name: str
+    author: str
     stall_id: str
-    language: str
     rating: float
     review_text: str
-    review_time: datetime
-    relative_time_description: str
+    relative_time: str
     
 
 class User_History(BaseModel):
