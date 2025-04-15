@@ -146,7 +146,7 @@ def get_hawkerstalls_df(hawker_df):
     columns = ['name', 'place_id', 'address', 'business_status', 'url']
     result_df = pd.DataFrame(columns=columns)
     for index, row in hawker_df.iterrows():
-        idx = row.serial_no
+        idx = row.serial_no # TODO: change to hawker_centre_id
         lan = row.latitude
         lon = row.longitude
         zip = row.zipcode

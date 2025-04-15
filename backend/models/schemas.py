@@ -35,7 +35,7 @@ def get_hawker_stall(Hawker_Stall) -> dict:
         "id": str(Hawker_Stall["_id"]),
         "stall_id": Hawker_Stall["stall_id"],
         "name": Hawker_Stall["name"],
-        "centre_id": Hawker_Stall["centre_id"],
+        "hawker_centre_id": Hawker_Stall["hawker_centre_id"],
         "rating": Hawker_Stall["rating"],
         "business_status": Hawker_Stall["business_status"],
         "url": Hawker_Stall["url"]
@@ -59,13 +59,11 @@ def get_reviews(Reviews) -> dict:
     return {
         "id": str(Reviews["_id"]),
         "author_url": Reviews["author_url"],
-        "author_name": Reviews["author_name"],
+        "author": Reviews["author"],
         "stall_id": Reviews["stall_id"],
-        "language": Reviews["language"],
         "rating": Reviews["rating"],
         "review_text": Reviews["review_text"],
-        "review_time": Reviews["review_time"],
-        "relative_time_description": Reviews["relative_time_description"]
+        "relative_time": Reviews["relative_time"]
     }
     
 def get_reviews_list(Reviews) -> list:
