@@ -4,6 +4,7 @@ from datetime import datetime
 from models.docs import Cleaning_Schedule
 from models.docs import Hawker_Centre
 import uuid
+import requests
 
 def parse_date(date_str):
     try:
@@ -14,7 +15,15 @@ def parse_date(date_str):
 
 
 def load_cleaning_schedules():
-    df = pd.read_csv("data/DatesofHawkerCentresClosure.csv")
+    dataset_id = "d_bda4baa634dd1cc7a6c7cad5f19e2d68"
+    url = "https://data.gov.sg/api/action/datastore_search?resource_id="  + dataset_id
+
+    response = requests.get(url)
+    records_json = response.json()
+
+    # Extract records from JSON
+    raw_records = records_json["result"]["records"]
+    df = pd.DataFrame(raw_records)
 
     records = []
 
@@ -45,7 +54,15 @@ def load_cleaning_schedules():
         print("No valid records found.")
 
 def load_hawker_centres():
-    df = pd.read_csv("data/DatesofHawkerCentresClosure.csv")
+    dataset_id = "d_bda4baa634dd1cc7a6c7cad5f19e2d68"
+    url = "https://data.gov.sg/api/action/datastore_search?resource_id="  + dataset_id
+
+    response = requests.get(url)
+    records_json = response.json()
+
+    # Extract records from JSON
+    raw_records = records_json["result"]["records"]
+    df = pd.DataFrame(raw_records)
 
     records = []
 

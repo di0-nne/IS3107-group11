@@ -6,8 +6,8 @@ class Hawker_Centre(BaseModel):
     centre_id: str
     name: str
     address: str
-    type: str
-    owner: str
+    # type: str
+    # owner: str
     latitude: str
     longitude: str
     description: str
