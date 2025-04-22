@@ -1,3 +1,55 @@
+from airflow import DAG
+from airflow.operators.python import PythonOperator
+from datetime import datetime
+from services.get_cleaning_schedules import load_cleaning_schedules
+from services.get_hawker_centres import load_hawker_centres
+from services.get_hawker_stalls import get_hawkerstalls_df
+from services.get_reviews import get_all_reviews
+from database import db
+import pandas as pd
+
+def extract_hawker_stalls():
+    df = pd.DataFrame(list(db.hawker_centre.find()))
+    df["zipcode"] = df["address"].astype(str).str[-6:]
+    df.sort_values(by=['latitude'], inplace=True)
+    get_hawkerstalls_df(df)
+
+def extract_reviews():
+    df = pd.DataFrame(list(db.hawker_stall.find()))
+    get_all_reviews(df)
+
+with DAG(
+    dag_id='update_hawker_data',
+    start_date = datetime(2025, 1, 1),
+    description='ETL pipeline to load hawker data into MongoDB',
+    schedule_interval='@weekly',
+    catchup=False,
+    tags=["hawker"]
+) as dag:
+    
+    t1 = PythonOperator(
+        task_id='load_cleaning_schedules',
+        python_callable=load_cleaning_schedules,
+    )
+
+    t2 = PythonOperator(
+        task_id='load_hawker_centres',
+        python_callable=load_hawker_centres,
+    )
+
+    t3 = PythonOperator(
+        task_id='extract_hawker_stalls',
+        python_callable=extract_hawker_stalls,
+    )
+
+    t4 = PythonOperator(
+        task_id='extract_reviews',
+        python_callable=extract_reviews,
+    )
+
+
+    [t1, t2] >> t3 >> t4
+
 ### example
 # 
 # from airflow import DAG
