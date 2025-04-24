@@ -1,0 +1,13 @@
+
+venv/
+.env
+*.deb
+*.zip
+
+chromedriver
+chromedriver-linux64/
+chromedriver-linux64.zip
+
+airflow.db
+airflow-webserver.pid
+logs/

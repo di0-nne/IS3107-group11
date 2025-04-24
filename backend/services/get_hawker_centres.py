@@ -1,0 +1,36 @@
+import pandas as pd
+from database import db
+from models.docs import Hawker_Centre
+import requests
+
+def load_hawker_centres():
+    dataset_id = "d_bda4baa634dd1cc7a6c7cad5f19e2d68"
+    url = "https://data.gov.sg/api/action/datastore_search?resource_id="  + dataset_id
+
+    response = requests.get(url)
+    records_json = response.json()
+
+    # Extract records from JSON
+    raw_records = records_json["result"]["records"]
+    df = pd.DataFrame(raw_records)
+
+    records = []
+
+    for index, row in df.iterrows():
+        validated = Hawker_Centre(
+            centre_id=str(row["serial_no"]),
+            name=row.get("name", ""),
+            address=row.get("address_myenv", ""),
+            latitude=str(row.get("latitude_hc", "")),
+            longitude=str(row.get("longitude_hc", "")),
+            description=row.get("description_myenv", ""),
+            status=row.get("status", "")
+        )
+
+        records.append(validated.model_dump())
+
+    if records:
+        db.hawker_centre.insert_many(records)
+        print(f"Inserted {len(records)} hawker centres into MongoDB.")
+    else:
+        print("No hawker centre records found.")
