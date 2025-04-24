@@ -12,26 +12,26 @@ import time
 import os 
 
 ### Set paths
-hawker_path = ""
+# hawker_path = "/home/chris/IS3107-group11/backend/data/DatesofHawkerCentresClosure.csv"
 
 ### Set variables
 load_dotenv()
-API_KEY = os.getenv('GOOGLE_API_KEY')
+API_KEY = os.getenv('GOOGLE_MAPS_API_KEY')
 map_client = googlemaps.Client(API_KEY)
 
 ################################### clean dataset ###################################
 # TODO: refactor this to take in centres from mongodb instead
 # Clean DatesofHawkerCentresClosure.csv
-df = pd.read_csv(hawker_path)
-dfc = df[['name', 'address_myenv', 'latitude_hc', 'longitude_hc']]
+# df = pd.read_csv(hawker_path)
+# dfc = df[['name', 'address_myenv', 'latitude_hc', 'longitude_hc']]
 
-# Load cleaned csv
-dfc['zipcode'] = dfc['address_myenv'].astype(str).str[-6:]
-dfc.rename(columns={
-    'address_myenv':'address', 
-    'latitude_hc':'latitude', 
-    'longitude_hc':'longitude'}, inplace=True)
-dfc.sort_values(by=['latitude'], inplace=True)
+# # Load cleaned csv
+# dfc['zipcode'] = dfc['address_myenv'].astype(str).str[-6:]
+# dfc.rename(columns={
+#     'address_myenv':'address', 
+#     'latitude_hc':'latitude', 
+#     'longitude_hc':'longitude'}, inplace=True)
+# dfc.sort_values(by=['latitude'], inplace=True)
 
 ################################### extracting stalls ###################################
 
@@ -146,7 +146,7 @@ def get_hawkerstalls_df(hawker_df):
     columns = ['name', 'place_id', 'address', 'business_status', 'url']
     result_df = pd.DataFrame(columns=columns)
     for index, row in hawker_df.iterrows():
-        idx = row.serial_no # TODO: change to hawker_centre_id
+        idx = row.centre_id # TODO: change to hawker_centre_id
         lan = row.latitude
         lon = row.longitude
         zip = row.zipcode
