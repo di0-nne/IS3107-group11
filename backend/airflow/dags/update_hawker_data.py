@@ -1,3 +1,10 @@
+import sys
+import os
+
+# Add the backend directory (which contains 'services') to sys.path
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
+
+
 from airflow import DAG
 from airflow.operators.python import PythonOperator
 from datetime import datetime
@@ -8,15 +15,23 @@ from services.get_reviews import get_all_reviews
 from database import db
 import pandas as pd
 
+
 def extract_hawker_stalls():
-    df = pd.DataFrame(list(db.hawker_centre.find()))
+    # Fetch only 1 hawker centre from MongoDB
+    single_centre = list(db.hawker_centre.find().limit(1))
+    print("Extracted hawker centre:", single_centre)
+    df = pd.DataFrame(single_centre)
+
+    # Add zipcode column 
     df["zipcode"] = df["address"].astype(str).str[-6:]
     df.sort_values(by=['latitude'], inplace=True)
     get_hawkerstalls_df(df)
 
 def extract_reviews():
     df = pd.DataFrame(list(db.hawker_stall.find()))
+    df = df.head(10)
     get_all_reviews(df)
+    print("Extracting reviews for:", df[["name", "url"]])
 
 with DAG(
     dag_id='update_hawker_data',
