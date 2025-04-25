@@ -141,4 +141,4 @@ def get_all_reviews(df):
                 temp = pd.concat([temp, pd.DataFrame([entry])], ignore_index=True)
 
             if not temp.empty:
-                reviews_db.insert_many(temp.to_dict(orient="records"))
+                return temp
