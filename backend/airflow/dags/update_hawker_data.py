@@ -22,10 +22,6 @@ def extract_hawker_stalls():
     print("Extracted hawker centre:", single_centre)
     df = pd.DataFrame(single_centre)
 
-    # Add zipcode column 
-    df["zipcode"] = df["address"].astype(str).str[-6:]
-    df.sort_values(by=['latitude'], inplace=True)
-    get_hawkerstalls_df(df)
 
 def extract_reviews():
     df = pd.DataFrame(list(db.hawker_stall.find()))
