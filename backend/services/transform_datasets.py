@@ -40,10 +40,12 @@ def transform_stalls(stalls_full): ## raw stalls dataset
 
     mask_name = ~stalls_full['name_norm'].str.contains(pattern, na=False)
     keep_mask = mask_name
-    stalls_to_include = stalls_full[keep_mask].reset_index(drop=True)
-    stalls_to_exclude = stalls_full[~keep_mask].reset_index(drop=True)
+    stalls_included = stalls_full[keep_mask].reset_index(drop=True)
+    stalls_excluded = stalls_full[~keep_mask].reset_index(drop=True)
+    stalls_included = stalls_included[stalls_included['rating'] != 'NIL'].reset_index(drop=True)
+    stalls_included['rating'].astype(float)
     stalls_included = stalls_included.drop(columns=['address_norm', 'name_norm'])
-    return stalls_to_include
+    return stalls_included
 
 
 def transform_reviews(reviews_full): ## surface level reviews transformation since more transformation will be done in downstream apps
