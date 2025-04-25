@@ -42,6 +42,7 @@ def transform_stalls(stalls_full): ## raw stalls dataset
     keep_mask = mask_name
     stalls_to_include = stalls_full[keep_mask].reset_index(drop=True)
     stalls_to_exclude = stalls_full[~keep_mask].reset_index(drop=True)
+    stalls_included = stalls_included.drop(columns=['address_norm', 'name_norm'])
     return stalls_to_include
 
 
