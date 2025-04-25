@@ -167,4 +167,4 @@ def get_hawkerstalls_df(hawker_df):
             }
 
     if not result_df.empty:
-        hawker_stall_db.insert_many(result_df.to_dict(orient="records"))
+        return result_df
