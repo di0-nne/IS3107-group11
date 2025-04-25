@@ -143,7 +143,7 @@ def get_hawkerstalls_df(hawker_df):
         'business_status', and 'url' where each row represents a hawker
         stall.
     """
-    columns = ['name', 'place_id', 'address', 'business_status', 'url']
+    columns = ['name', 'place_id', 'address', 'business_status', 'url', 'rating']
     result_df = pd.DataFrame(columns=columns)
     for index, row in hawker_df.iterrows():
         idx = row.centre_id # TODO: change to hawker_centre_id

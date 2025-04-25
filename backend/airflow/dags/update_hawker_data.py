@@ -9,25 +9,66 @@ from airflow import DAG
 from airflow.operators.python import PythonOperator
 from datetime import datetime
 from services.get_cleaning_schedules import load_cleaning_schedules
-from services.get_hawker_centres import load_hawker_centres
+from services.get_hawker_centres import extract_hawker_centres, load_hawker_centres
 from services.get_hawker_stalls import get_hawkerstalls_df
 from services.get_reviews import get_all_reviews
+from services.transform_datasets import transform_hawkers, transform_reviews, transform_stalls
 from database import db
 import pandas as pd
 
 
-def extract_hawker_stalls():
-    # Fetch only 1 hawker centre from MongoDB
+def extract_hawker_centres_task(**kwargs):
+    df = extract_hawker_centres()
+    kwargs['ti'].xcom_push(key='raw_hawker_centres', value=df.to_json())
+
+
+def transform_hawker_centres_task(**kwargs):
+    raw_json = kwargs['ti'].xcom_pull(key='raw_hawker_centres')
+    df = pd.read_json(raw_json)
+    transformed_df = transform_hawkers(df)
+    kwargs['ti'].xcom_push(key='transformed_hawker_centres', value=transformed_df.to_json())
+
+def load_hawker_centres_task(**kwargs):
+    transformed_json = kwargs['ti'].xcom_pull(key='transformed_hawker_centres')
+    df = pd.read_json(transformed_json)
+    load_hawker_centres(df)
+
+def extract_hawker_stalls_task(**kwargs):
     single_centre = list(db.hawker_centre.find().limit(1))
-    print("Extracted hawker centre:", single_centre)
     df = pd.DataFrame(single_centre)
+    stalls_df = get_hawkerstalls_df(df)
+    kwargs['ti'].xcom_push(key='raw_stalls', value=stalls_df.to_json())
 
+def transform_hawker_stalls_task(**kwargs):
+    raw_stalls_json = kwargs['ti'].xcom_pull(key='raw_stalls')
+    df = pd.read_json(raw_stalls_json)
+    print("Transform Stalls: Available columns =>", df.columns)
+    print(df.head())
+    transformed_df = transform_stalls(df)
+    kwargs['ti'].xcom_push(key='transformed_stalls', value=transformed_df.to_json())
 
-def extract_reviews():
-    df = pd.DataFrame(list(db.hawker_stall.find()))
-    df = df.head(10)
-    get_all_reviews(df)
-    print("Extracting reviews for:", df[["name", "url"]])
+def load_hawker_stalls_task(**kwargs):
+    stalls_json = kwargs['ti'].xcom_pull(key='transformed_stalls')
+    df = pd.read_json(stalls_json)
+    db.hawker_stall.insert_many(df.to_dict(orient="records"))
+
+def extract_reviews_task(**kwargs):
+    df = pd.read_json(kwargs['ti'].xcom_pull(key='transformed_stalls'))
+    df = df.head(10)  # Optional: Limit number of stalls
+    all_reviews_df = get_all_reviews(df)
+    kwargs['ti'].xcom_push(key='raw_reviews', value=all_reviews_df.to_json())
+
+def transform_reviews_task(**kwargs):
+    raw_reviews_json = kwargs['ti'].xcom_pull(key='raw_reviews')
+    df = pd.read_json(raw_reviews_json)
+    cleaned_df = transform_reviews(df)
+    kwargs['ti'].xcom_push(key='transformed_reviews', value=cleaned_df.to_json())
+
+def load_reviews_task(**kwargs):
+    reviews_json = kwargs['ti'].xcom_pull(key='transformed_reviews')
+    df = pd.read_json(reviews_json)
+    db.reviews.insert_many(df.to_dict(orient="records"))
+
 
 with DAG(
     dag_id='update_hawker_data',
@@ -38,28 +79,22 @@ with DAG(
     tags=["hawker"]
 ) as dag:
     
-    t1 = PythonOperator(
-        task_id='load_cleaning_schedules',
-        python_callable=load_cleaning_schedules,
-    )
+    t1 = PythonOperator(task_id='load_cleaning_schedules', python_callable=load_cleaning_schedules)
 
-    t2 = PythonOperator(
-        task_id='load_hawker_centres',
-        python_callable=load_hawker_centres,
-    )
+    t2a = PythonOperator(task_id='extract_hawker_centres', python_callable=extract_hawker_centres_task)
+    t2b = PythonOperator(task_id='transform_hawker_centres', python_callable=transform_hawker_centres_task)
+    t2c = PythonOperator(task_id='load_hawker_centres', python_callable=load_hawker_centres_task)
 
-    t3 = PythonOperator(
-        task_id='extract_hawker_stalls',
-        python_callable=extract_hawker_stalls,
-    )
+    t3a = PythonOperator(task_id='extract_hawker_stalls', python_callable=extract_hawker_stalls_task)
+    t3b = PythonOperator(task_id='transform_hawker_stalls', python_callable=transform_hawker_stalls_task)
+    t3c = PythonOperator(task_id='load_hawker_stalls', python_callable=load_hawker_stalls_task)
 
-    t4 = PythonOperator(
-        task_id='extract_reviews',
-        python_callable=extract_reviews,
-    )
+    t4a = PythonOperator(task_id='extract_reviews', python_callable=extract_reviews_task)
+    t4b = PythonOperator(task_id='transform_reviews', python_callable=transform_reviews_task)
+    t4c = PythonOperator(task_id='load_reviews', python_callable=load_reviews_task)
 
 
-    [t1, t2] >> t3 >> t4
+    t1 >> t2a >> t2b >> t2c >> t3a >> t3b >> t3c >> t4a >> t4b >> t4c
 
 ### example
 # 

@@ -33,7 +33,7 @@ def load_cleaning_schedules():
     records = []
 
     for index, row in df.iterrows():  # iterate through each row
-        centre_id = str(row["serial_no"])
+        centre_id = float(row["serial_no"])
 
         for quarter in ["q1", "q2", "q3", "q4"]:
             start = parse_date(row[f"{quarter}_cleaningstartdate"])
