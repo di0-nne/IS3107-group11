@@ -3,19 +3,20 @@ from datetime import datetime
 
 # TODO: do the same for Hawker Stall and User
 class Hawker_Centre(BaseModel):
-    centre_id: str
+    centre_id: float
     name: str
     address: str
     # type: str
     # owner: str
     latitude: str
     longitude: str
+    zipcode: str
     description: str
     status: str
 
 class Cleaning_Schedule(BaseModel):
     schedule_id: str
-    centre_id: str
+    centre_id: float
     cleaning_quarter: str
     cleaning_startdate: datetime
     cleaning_enddate: datetime
