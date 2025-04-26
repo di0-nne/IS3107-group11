@@ -3,6 +3,7 @@ from models.docs import *
 from database import *
 from models.schemas import *
 from models.getters import *
+from transformers.analytics_transformer import *
 from bson import ObjectId
 
 router = APIRouter()
@@ -27,6 +28,6 @@ def openingHours():
 def reviews():
     return getReviews()
 
-# @router.get("/userHistory")
-# def userHistory():
-#     return getUserHistory()
+@router.get("/geographicalData")
+def geographicalData():
+    return geographical_data()
