@@ -13,6 +13,8 @@ from services.get_hawker_centres import extract_hawker_centres, load_hawker_cent
 from services.get_hawker_stalls import get_hawkerstalls_df
 from services.get_reviews import get_all_reviews
 from services.transform_datasets import transform_hawkers, transform_reviews, transform_stalls
+from transformers.normalisation import normalise_stalls
+from recommenders.BERT import BERTRecommender
 from database import db
 import pandas as pd
 
@@ -69,6 +71,31 @@ def load_reviews_task(**kwargs):
     df = pd.read_json(reviews_json)
     db.reviews.insert_many(df.to_dict(orient="records"))
 
+def transform_recommenders(**kwargs):
+    stalls_json = kwargs['ti'].xcom_pull(key='transformed_stalls')
+    stalls_df = pd.read_json(stalls_json)
+    normalised_stalls_df = normalise_stalls(stalls_df)
+    kwargs['ti'].xcom_push(key='normalised_stalls', value=normalised_stalls_df.to_json())
+
+def run_recommenders(**kwargs):
+    stalls_json = kwargs['ti'].xcom_pull(key='normalised_stalls')
+    stalls = pd.read_json(stalls_json)
+    reviews_json = kwargs['ti'].xcom_pull(key='transformed_reviews')
+    reviews = pd.read_json(reviews_json)
+
+    recommender = BERTRecommender()
+    hitrate_df, metric_df = recommender.run(stalls, reviews)
+
+    # hr_json = hitrate_df.to_json(orient='split')
+    # mr_json = metric_df.to_json(orient='split')
+
+    # kwargs['ti'].xcom_push(key='bert_hitrate', value=hr_json)
+    # kwargs['ti'].xcom_push(key='bert_metrics', value=mr_json)
+
+    db.bert_hitrate.insert_many(hitrate_df)
+    db.bert_metrics.insert_many(metric_df)
+
+    
 
 with DAG(
     dag_id='update_hawker_data',
@@ -93,8 +120,11 @@ with DAG(
     t4b = PythonOperator(task_id='transform_reviews', python_callable=transform_reviews_task)
     t4c = PythonOperator(task_id='load_reviews', python_callable=load_reviews_task)
 
+    t5a = PythonOperator(task_id='transform_recommenders', python_callable=transform_recommenders)
+    t5b = PythonOperator(task_id='run_recommenders', python_callable=run_recommenders)
 
-    t1 >> t2a >> t2b >> t2c >> t3a >> t3b >> t3c >> t4a >> t4b >> t4c
+
+    t1 >> t2a >> t2b >> t2c >> t3a >> t3b >> t3c >> t4a >> t4b >> t4c >> t5a >> t5b
 
 ### example
 # 
