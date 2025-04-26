@@ -6,8 +6,6 @@ class Hawker_Centre(BaseModel):
     centre_id: float
     name: str
     address: str
-    # type: str
-    # owner: str
     latitude: str
     longitude: str
     zipcode: str
@@ -25,7 +23,7 @@ class Cleaning_Schedule(BaseModel):
 class Hawker_Stall(BaseModel):
     stall_id: str
     name: str
-    hawker_centre_id: str
+    centre_id: str
     rating: float
     business_status: str
     url: str
