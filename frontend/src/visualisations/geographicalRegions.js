@@ -165,7 +165,19 @@ const GeographicalRegions = () => {
                 const best = regionData.reduce((prev, curr) => (curr.avg_rating > prev.avg_rating ? curr : prev));
                 const worst = regionData.reduce((prev, curr) => (curr.avg_rating < prev.avg_rating ? curr : prev));
                 const avgRating =regionData.reduce((sum, centre) => sum + (centre.avg_rating || 0), 0) / regionData.length;
-        
+
+                const allStalls = regionData.flatMap(c => 
+                    (c.top3_stalls || []).map(stall => ({
+                        stallName: stall[0],
+                        rating: stall[1],
+                        centreName: c.name,
+                    }))
+                );
+                
+                const sortedStalls = allStalls.sort((a, b) => b.rating - a.rating);
+                const overallTop3 = sortedStalls.slice(0, 3);
+                console.log(best.top3_stalls)
+
                 output[region] = {
                     bestCentre: best.name,
                     bestAvgRating: best.avg_rating.toFixed(2),
@@ -173,6 +185,7 @@ const GeographicalRegions = () => {
                     worstCentre: worst.name,
                     worstAvgRating: worst.avg_rating.toFixed(2),
                     avgRegionRating: avgRating.toFixed(2),
+                    overallTop3: overallTop3
                 };
             } else {
                 output[region] = {
@@ -182,6 +195,7 @@ const GeographicalRegions = () => {
                     worstCentre: '-',
                     worstAvgRating: '-',
                     avgRegionRating: '-',
+                    overallTop3: '-'
                 };
             }
         });
@@ -190,7 +204,6 @@ const GeographicalRegions = () => {
     }
     
     const regionSpecific = getRegionSpecific();
-    console.log(regionSpecific)
 
 
     
@@ -215,19 +228,19 @@ const GeographicalRegions = () => {
                 <tbody>
                     {regionStats.map((row, index) => (
                     <tr key={index}>
-                        <td style={{ border: '1px solid #ccc', padding: '8px' }}>{row.region}</td>
-                        <td style={{ border: '1px solid #ccc', padding: '8px' }}>{row.bestCentre}</td>
-                        <td style={{ border: '1px solid #ccc', padding: '8px' }}>{row.bestAvgRating}</td>
-                        <td style={{ border: '1px solid #ccc', padding: '8px' }}>{row.worstCentre}</td>
-                        <td style={{ border: '1px solid #ccc', padding: '8px' }}>{row.worstAvgRating}</td>
-                        <td style={{ border: '1px solid #ccc', padding: '8px' }}>{row.avgRegionRating}</td>
+                        <td className='table-cell'>{row.region}</td>
+                        <td className='table-cell'>{row.bestCentre}</td>
+                        <td className='table-cell'>{row.bestAvgRating}⭐</td>
+                        <td className='table-cell'>{row.worstCentre}</td>
+                        <td className='table-cell'>{row.worstAvgRating}⭐</td>
+                        <td className='table-cell'>{row.avgRegionRating}⭐</td>
                     </tr>
                     ))}
                 </tbody>
             </table>
 
-            <h2>Hawker Centre Performance for {selectedRegion} Region</h2>
-            <select value={selectedRegion} onChange={(e) => setSelectedRegion(e.target.value)}>
+            <h2>Hawker Centre Performance for {selectedRegion}</h2>
+            <select style={{marginBottom:"10px"}} value={selectedRegion} onChange={(e) => setSelectedRegion(e.target.value)}>
                 {regions.map((region) => (
                     <option key={region} value={region}>
                     {region}
@@ -236,38 +249,86 @@ const GeographicalRegions = () => {
             </select>
 
             <div>
-                <h3>{selectedRegion} Region Overview</h3>
-
-                <table>
+                <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                     <tbody>
                     <tr>
-                        <td>Best Hawker Centre</td>
-                        <td>{regionSpecific[selectedRegion].bestCentre} ({regionSpecific[selectedRegion].bestAvgRating} ⭐)</td>
+                        <td className='table-cell'>Best Hawker Centre in Region</td>
+                        <td className='table-cell'>{regionSpecific[selectedRegion].bestCentre} ({regionSpecific[selectedRegion].bestAvgRating} ⭐)</td>
                     </tr>
                     <tr>
-                        <td>Top 3 Stalls in Best Centre</td>
-                        <td>
-                        <ul>
-                            {regionSpecific[selectedRegion].top3Stalls}
-                        </ul>
+                        <td className='table-cell'>Worst Hawker Centre in Region</td>
+                        <td className='table-cell'>{regionSpecific[selectedRegion].worstCentre} ({regionSpecific[selectedRegion].worstAvgRating} ⭐)</td>
+                    </tr>
+                    <tr>
+                        <td className='table-cell'>Average Rating of Hawker Centres in Region</td>
+                        <td className='table-cell'>{regionSpecific[selectedRegion].avgRegionRating} ⭐</td>
+                    </tr>
+                    <tr>
+                        <td className='table-cell'>Top 3 Stalls Overall</td>
+                        <td className='table-cell'>
+                            {Array.isArray(regionSpecific[selectedRegion].overallTop3) ? (
+                                <ul>
+                                    {regionSpecific[selectedRegion].overallTop3.map((stall, index) => (
+                                    <li key={index}>{stall.stallName}, {stall.centreName} - {stall.rating}</li>
+                                    ))}
+                                </ul>
+                                ) : (
+                                <p>-</p>
+                            )}
                         </td>
                     </tr>
-                    <tr>
-                        <td>Worst Hawker Centre</td>
-                        <td>{regionSpecific[selectedRegion].worstCentre} ({regionSpecific[selectedRegion].worstAvgRating} ⭐)</td>
-                    </tr>
-                    <tr>
-                        <td>Average Rating of Centres</td>
-                        <td>{regionSpecific[selectedRegion].avgRegionRating} ⭐</td>
-                    </tr>
-                    <tr>
-                        <td>Top 3 Stalls Overall</td>
-                        <td>
-                        <ul>
-                            {regionSpecific[selectedRegion].top3Stalls}
-                        </ul>
-                        </td>
-                    </tr>
+                    </tbody>
+                </table>
+
+                <br />
+
+                <table style={{ width: '100%', borderCollapse: 'collapse'}}>
+                    <thead>
+                        <tr style={{ backgroundColor: '#f0f0f0' }}>
+                        <th style={{ border: '1px solid #ccc', padding: '8px' }}>Top 3 Stalls in Best Hawker Centre in {selectedRegion} Region</th>
+                        <th style={{ border: '1px solid #ccc', padding: '8px', width: '10%' }}>Rating</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {Array.isArray(regionSpecific[selectedRegion].top3Stalls) ? (
+                        regionSpecific[selectedRegion].top3Stalls.map(([stall, rating], index) => (
+                            <tr key={index}>
+                            <td className="table-cell">{stall}</td>
+                            <td className="table-cell">{rating}</td>
+                            </tr>
+                        ))
+                        ) : (
+                        <tr>
+                            <td className="table-cell">-</td>
+                            <td className="table-cell">-</td>
+                        </tr>
+                        )}
+                    </tbody>
+                </table>
+                <br />
+                <table style={{ width: '100%', borderCollapse: 'collapse'}}>
+                    <thead>
+                        <tr style={{ backgroundColor: '#f0f0f0' }}>
+                        <th style={{ border: '1px solid #ccc', padding: '8px', width: '45%' }}>Top 3 Stalls in {selectedRegion} Region</th>
+                        <th style={{ border: '1px solid #ccc', padding: '8px' }}>Hawker Centre</th>
+                        <th style={{ border: '1px solid #ccc', padding: '8px', width:'10%' }}>Rating</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {Array.isArray(regionSpecific[selectedRegion].top3Stalls) ? (
+                        regionSpecific[selectedRegion].overallTop3.map((stall, index) => (
+                            <tr key={index}>
+                            <td className="table-cell">{stall.stallName}</td>
+                            <td className="table-cell">{stall.centreName}</td>
+                            <td className="table-cell">{stall.rating}</td>
+                            </tr>
+                        ))
+                        ) : (
+                        <tr>
+                            <td className="table-cell">-</td>
+                            <td className="table-cell">-</td>
+                        </tr>
+                        )}
                     </tbody>
                 </table>
             </div>
