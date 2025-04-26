@@ -164,7 +164,7 @@ def get_hawkerstalls_df(hawker_df):
                 'centre_id': int(idx),
                 'business_status': details['business_status'],
                 'url':details['url'],
-                'rating': float(r)
+                'rating': r
             }
 
     if not result_df.empty:
