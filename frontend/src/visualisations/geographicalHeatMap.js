@@ -72,8 +72,6 @@ const GeographicalHeatmap = () => {
           ]
         }
       );
-      
-      console.log(heatmapData);
 
       heatLayerRef.current = L.heatLayer(heatmapData, {
         radius: 30,
