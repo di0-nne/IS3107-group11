@@ -12,7 +12,7 @@ from services.get_cleaning_schedules import load_cleaning_schedules
 from services.get_hawker_centres import extract_hawker_centres, load_hawker_centres
 from services.get_hawker_stalls import get_hawkerstalls_df
 from services.get_reviews import get_all_reviews
-from services.transform_datasets import transform_hawkers, transform_reviews, transform_stalls
+from backend.transformers.transform_datasets import transform_hawkers, transform_reviews, transform_stalls
 from database import db
 import pandas as pd
 

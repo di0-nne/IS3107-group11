@@ -22,17 +22,20 @@ def geographical_data():
     }))
 
     centre_ratings = defaultdict(list)
+    stall_ratings = defaultdict(list)
 
     for stall in stalls:
         cid = stall['centre_id']
         if 'rating' is not None and not math.isnan(stall['rating']):
             centre_ratings[cid].append(stall['rating'])
+            stall_ratings[cid].append((stall['name'], stall['rating']))
 
     output = []
     for centre in centres:
         cid = centre['centre_id']
         ratings = centre_ratings.get(cid, [])
         avg_rating = round(sum(ratings) / len(ratings), 2) if ratings else 0
+        top3_stalls = sorted(stall_ratings[cid], key=lambda x: x[1], reverse=True)[0:3]
 
         output.append({
             'centre_id': cid,
@@ -40,7 +43,8 @@ def geographical_data():
             'latitude': centre['latitude'],
             'longitude': centre['longitude'],
             'avg_rating': avg_rating,
-            'stalls': len(ratings)
+            'stalls': len(ratings),
+            'top3_stalls': top3_stalls
         })
         
     return output
