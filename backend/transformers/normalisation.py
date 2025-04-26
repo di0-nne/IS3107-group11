@@ -1,4 +1,5 @@
 import re
+import pandas as pd
 
 def normalise_stalls(stalls): ## raw stalls dataset
     stalls['name_norm'] = (
@@ -36,3 +37,22 @@ def normalise_stalls(stalls): ## raw stalls dataset
     stalls['rating'] = stalls['rating'].astype(float)
 
     return stalls
+
+
+def normalise_reviews(reviews):
+    
+    REF = pd.Timestamp('2025-04-27')
+    
+    def parse_rt(rt):
+        if pd.isna(rt): 
+            return REF
+        num, unit, *_ = rt.split()
+        n = 1 if num in ('a','an') else int(num)
+        if 'year' in unit: return REF - pd.DateOffset(years=n)
+        if 'month' in unit: return REF - pd.DateOffset(months=n)
+        if 'day' in unit: return REF - pd.DateOffset(days=n)
+        return REF
+
+    reviews['ts'] = reviews['relative_time'].apply(parse_rt)
+
+    return reviews
