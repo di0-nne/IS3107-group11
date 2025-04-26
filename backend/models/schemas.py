@@ -5,8 +5,6 @@ def get_hawker_centre(Hawker_Centre) -> dict:
         "centre_id": Hawker_Centre["centre_id"],
         "name": Hawker_Centre["name"],
         "address": Hawker_Centre["address"],
-        "type": Hawker_Centre["type"],
-        "owner": Hawker_Centre["owner"],
         "latitude": Hawker_Centre["latitude"],
         "longitude": Hawker_Centre["longitude"],
         "description": Hawker_Centre["description"],
@@ -35,7 +33,7 @@ def get_hawker_stall(Hawker_Stall) -> dict:
         "id": str(Hawker_Stall["_id"]),
         "stall_id": Hawker_Stall["stall_id"],
         "name": Hawker_Stall["name"],
-        "hawker_centre_id": Hawker_Stall["hawker_centre_id"],
+        "centre_id": Hawker_Stall["centre_id"],
         "rating": Hawker_Stall["rating"],
         "business_status": Hawker_Stall["business_status"],
         "url": Hawker_Stall["url"]

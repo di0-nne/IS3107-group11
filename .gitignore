@@ -1,6 +1,7 @@
 .env
 *.deb
 *.zip
+*.pwc
 chromedriver
 chromedriver-linux64/
 chromedriver-linux64.zip
