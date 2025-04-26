@@ -36,3 +36,18 @@
     transform: rotate(360deg);
   }
 }
+
+.geographical-heatmap {
+  width: 80%;
+  margin: auto;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  margin-top: 5px;
+}
+
+.legend-margin { 
+  margin-left: 8px;
+}
