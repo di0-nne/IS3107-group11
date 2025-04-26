@@ -86,14 +86,11 @@ def run_recommenders(**kwargs):
     recommender = BERTRecommender()
     hitrate_df, metric_df = recommender.run(stalls, reviews)
 
-    # hr_json = hitrate_df.to_json(orient='split')
-    # mr_json = metric_df.to_json(orient='split')
+    hr_records = hitrate_df.to_dict(orient='records')
+    mr_records = metric_df.to_dict(orient='records')
 
-    # kwargs['ti'].xcom_push(key='bert_hitrate', value=hr_json)
-    # kwargs['ti'].xcom_push(key='bert_metrics', value=mr_json)
-
-    db.bert_hitrate.insert_many(hitrate_df)
-    db.bert_metrics.insert_many(metric_df)
+    db.bert_hitrate.insert_many(hr_records)
+    db.bert_metrics.insert_many(mr_records)
 
     
 
