@@ -13,7 +13,7 @@ from services.get_hawker_centres import extract_hawker_centres, load_hawker_cent
 from services.get_hawker_stalls import get_hawkerstalls_df
 from services.get_reviews import get_all_reviews
 from services.transform_datasets import transform_hawkers, transform_reviews, transform_stalls
-from transformers.normalisation import normalise_stalls
+from transformers_folder.normalisation import normalise_stalls
 from recommenders.BERT import BERTRecommender
 from database import db
 import pandas as pd
