@@ -12,11 +12,13 @@ from services.get_cleaning_schedules import load_cleaning_schedules
 from services.get_hawker_centres import extract_hawker_centres, load_hawker_centres
 from services.get_hawker_stalls import get_hawkerstalls_df
 from services.get_reviews import get_all_reviews
-from services.transform_datasets import transform_hawkers, transform_reviews, transform_stalls
+from transformers_folder.transform_datasets import transform_hawkers, transform_reviews, transform_stalls
 from transformers_folder.normalisation import normalise_stalls, normalise_reviews
 from recommenders.BERT import BERTRecommender
 from recommenders.deepFM import DeepFMRecommender
 from recommenders.NGCF import NGCFRecommender
+from transformers_folder.analytics_transformer import transform_hc_geographical_data, transform_hs_review_stats
+from recommenders.BERT import BERTRecommender, NGCFRecommender, DeepFMRecommender
 from database import db
 import pandas as pd
 
@@ -72,6 +74,12 @@ def load_reviews_task(**kwargs):
     reviews_json = kwargs['ti'].xcom_pull(key='transformed_reviews')
     df = pd.read_json(reviews_json)
     db.fake_reviews.insert_many(df.to_dict(orient="records"))  # change before submission
+    
+def transform_analytics(**kwargs):
+    print("transforming hawker centre data for geographical analysis")
+    transform_hc_geographical_data()
+    print("transforming hawker stall review data")
+    transform_hs_review_stats()
 
 def transform_recommenders(**kwargs):
     # stalls_json = kwargs['ti'].xcom_pull(key='transformed_stalls')
@@ -143,9 +151,13 @@ with DAG(
     t4b = PythonOperator(task_id='transform_reviews', python_callable=transform_reviews_task)
     t4c = PythonOperator(task_id='load_reviews', python_callable=load_reviews_task)
 
-    t5a = PythonOperator(task_id='transform_recommenders', python_callable=transform_recommenders)
-    t5b = PythonOperator(task_id='run_recommenders', python_callable=run_recommenders)
+    t5 = PythonOperator(task_id='transform_analytics', python_callable=transform_analytics)
+    
+    t6a = PythonOperator(task_id='transform_recommenders', python_callable=transform_recommenders)
+    t6b = PythonOperator(task_id='run_recommenders', python_callable=run_recommenders)
 
 
-    t1 >> t2a >> t2b >> t2c >> t3a >> t3b >> t3c >> t4a >> t4b >> t4c >> t5a >> t5b
+    t1 >> t2a >> t2b >> t2c >> t3a >> t3b >> t3c >> t4a >> t4b >> t4c
+    t4c >> [t5, t6a]
+    t6a >> t6b
     
