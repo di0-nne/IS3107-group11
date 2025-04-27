@@ -132,7 +132,7 @@ def get_all_reviews(df):
                 curr = reviews_result[i]
                 entry = {
                     'author_url' : curr['link'],
-                    'stall_id' : row.place_id,
+                    'stall_id' : row.stall_id,
                     'author' : i,
                     'review_text' : curr['review'],
                     'rating' : curr['rating'],

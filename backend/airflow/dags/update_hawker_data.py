@@ -13,6 +13,8 @@ from services.get_hawker_centres import extract_hawker_centres, load_hawker_cent
 from services.get_hawker_stalls import get_hawkerstalls_df
 from services.get_reviews import get_all_reviews
 from backend.transformers.transform_datasets import transform_hawkers, transform_reviews, transform_stalls
+from transformers.normalisation import normalise_stalls, normalise_reviews
+from recommenders.BERT import BERTRecommender, NGCFRecommender, DeepFMRecommender
 from database import db
 import pandas as pd
 
@@ -69,6 +71,44 @@ def load_reviews_task(**kwargs):
     df = pd.read_json(reviews_json)
     db.reviews.insert_many(df.to_dict(orient="records"))
 
+def transform_recommenders(**kwargs):
+    stalls_json = kwargs['ti'].xcom_pull(key='transformed_stalls')
+    stalls_df = pd.read_json(stalls_json)
+    normalised_stalls_df = normalise_stalls(stalls_df)
+    kwargs['ti'].xcom_push(key='normalised_stalls', value=normalised_stalls_df.to_json())
+
+    reviews_json = kwargs['ti'].xcom_pull(key='transformed_reviews')
+    reviews_df = pd.read_json(reviews_json)
+    normalised_reviews_df = normalise_reviews(reviews_df)
+    kwargs['ti'].xcom_push(key='normalised_reviews', value=normalised_reviews_df.to_json())
+
+def run_recommenders(**kwargs):
+    stalls_json = kwargs['ti'].xcom_pull(key='normalised_stalls')
+    stalls = pd.read_json(stalls_json)
+    reviews_json = kwargs['ti'].xcom_pull(key='normalised_reviews')
+    reviews = pd.read_json(reviews_json)
+
+    BERTrecommender = BERTRecommender()
+    hitrate_df, metric_df = BERTrecommender.run(stalls, reviews)
+    hr_records = hitrate_df.to_dict(orient='records')
+    mr_records = metric_df.to_dict(orient='records')
+    db.bert_hitrate.insert_many(hr_records)
+    db.bert_metrics.insert_many(mr_records)
+
+    NGCFrecommender = NGCFRecommender()
+    hitrate_df, metric_df = NGCFrecommender.run(stalls, reviews)
+    hr_records = hitrate_df.to_dict(orient='records')
+    mr_records = metric_df.to_dict(orient='records')
+    db.ngcf_hitrate.insert_many(hr_records)
+    db.ngcf_metrics.insert_many(mr_records)
+
+    DeepFMrecommender = DeepFMRecommender()
+    hitrate_df, metric_df = DeepFMrecommender.run(stalls, reviews)
+    hr_records = hitrate_df.to_dict(orient='records')
+    mr_records = metric_df.to_dict(orient='records')
+    db.deepfm_hitrate.insert_many(hr_records)
+    db.deepfm_metrics.insert_many(mr_records)
+
 
 with DAG(
     dag_id='update_hawker_data',
@@ -93,29 +133,9 @@ with DAG(
     t4b = PythonOperator(task_id='transform_reviews', python_callable=transform_reviews_task)
     t4c = PythonOperator(task_id='load_reviews', python_callable=load_reviews_task)
 
+    t5a = PythonOperator(task_id='transform_recommenders', python_callable=transform_recommenders)
+    t5b = PythonOperator(task_id='run_recommenders', python_callable=run_recommenders)
 
-    t1 >> t2a >> t2b >> t2c >> t3a >> t3b >> t3c >> t4a >> t4b >> t4c
 
-### example
-# 
-# from airflow import DAG
-# from airflow.operators.python import PythonOperator
-# from datetime import datetime
-# import requests
-# from database import get_mongo_collection
-
-# def fetch_google_places_data():
-#     api_key = "YOUR_GOOGLE_PLACES_API_KEY"
-#     url = f"https://maps.googleapis.com/maps/api/place/details/json?parameters&key={api_key}"
-#     response = requests.get(url)
-#     data = response.json()
+    t1 >> t2a >> t2b >> t2c >> t3a >> t3b >> t3c >> t4a >> t4b >> t4c >> t5a >> t5b
     
-#     collection = get_mongo_collection()
-#     for stall in data["results"]:
-#         collection.update_one({"place_id": stall["place_id"]}, {"$set": stall}, upsert=True)
-
-# with DAG("update_hawker_data", start_date=datetime(2024, 1, 1), schedule_interval="@daily") as dag:
-#     fetch_task = PythonOperator(
-#         task_id="fetch_data",
-#         python_callable=fetch_google_places_data
-#     )
