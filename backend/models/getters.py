@@ -10,6 +10,9 @@ def getCleaningSchedules():
 def getHawkerStalls():
     return get_hawker_stall_list(hawker_stall_db.find())
 
+def getHawkerStallsByCentreId(centreId: str):
+    return get_hawker_stall_list(hawker_stall_db.find({"centre_id": {"$eq": centreId}}))
+
 def getHawkerStallByIds(stallIds: list):
     return get_hawker_stall_list(hawker_stall_db.find({"stall_id": {"$in": stallIds}}))
 
@@ -29,5 +32,5 @@ def getUserHistory():
 def getGeographicalData():
     return get_geographical_hc_data_list(geographical_hc_db.find())
 
-def getHSReviewStats():
-    return get_hs_review_stats_list(hs_review_stats_db.find())
+def getHSReviewStats(stallId):
+    return get_hs_review_stats_list(hs_review_stats_db.find({"stall_id": {"$eq": stallId}}))

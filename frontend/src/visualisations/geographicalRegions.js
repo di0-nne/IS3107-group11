@@ -31,10 +31,10 @@ const GeographicalRegions = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-            const response = await getGeographicalData();
-            setCentres(response.data);
+                    const response = await getGeographicalData();
+                    setCentres(response.data);
             } catch (error) {
-            console.error('Error fetching geographical data:', error);
+                console.error('Error fetching geographical data:', error);
             }
         };
         fetchData();
