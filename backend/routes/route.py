@@ -34,5 +34,4 @@ def geographicalData():
 
 @router.get("/reviewsData")
 def reviewsData():
-    # return getHSReviewStats()
-    return review_stats_per_stall()
+    return getHSReviewStats()
