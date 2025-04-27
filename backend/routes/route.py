@@ -25,9 +25,14 @@ def openingHours():
     return getOpeningHours()
 
 @router.get("/reviews")
-def reviews():
-    return getReviews()
+def reviews(stallId: str):
+    return getReviewsById(stallId)
 
 @router.get("/geographicalData")
 def geographicalData():
-    return geographical_data()
+    return getGeographicalData()
+
+@router.get("/reviewsData")
+def reviewsData():
+    # return getHSReviewStats()
+    return review_stats_per_stall()
