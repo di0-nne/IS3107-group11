@@ -7,3 +7,5 @@ chromedriver-linux64/
 chromedriver-linux64.zip
 airflow.db
 logs/
+
+backend/airflow/airflow.db
