@@ -2,16 +2,10 @@ import axiosClient from './axiosClient';
 
 export const getGeographicalData = () => axiosClient.get('/geographicalData');
 
-export const getReviewStats = () => axiosClient.get('/reviewStats');
+export const getHawkerCentres = () => axiosClient.get('/hawkerCentres');
 
-// export const postUser = (userData) =>
-//     axiosClient.post('/geographicalData', userData);
+export const getHawkerStallsByCentreId = (centreId) => axiosClient.get(`/hawkerStallByCentreId?centreId=${centreId}`);
 
-// export const getUserById = (id) =>
-//     axiosClient.get(`/api/users/${id}`);
+export const getReviewStatsForStall = (stallId) => axiosClient.get(`/reviewsDataForStall?stallId=${stallId}`);
 
-// export const updateUser = (id, userData) =>
-//     axiosClient.put(`/api/users/${id}`, userData);
-
-// export const deleteUser = (id) =>
-//     axiosClient.delete(`/api/users/${id}`);
+export const getCleaningSchedule = () => axiosClient.get('/cleaningSchedule');

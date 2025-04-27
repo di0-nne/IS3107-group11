@@ -20,6 +20,10 @@ def cleaningSchedule():
 def hawkerStalls():
     return getHawkerStalls()
 
+@router.get("/hawkerStallByCentreId")
+def hawkerStallsByCentreId(centreId: int):
+    return getHawkerStallsByCentreId(centreId)
+
 @router.get("/openingHours")
 def openingHours():
     return getOpeningHours()
@@ -31,7 +35,8 @@ def reviews(stallId: str):
 @router.get("/geographicalData")
 def geographicalData():
     return getGeographicalData()
+    # return transform_hc_geographical_data()
 
-@router.get("/reviewsData")
-def reviewsData():
-    return getHSReviewStats()
+@router.get("/reviewsDataForStall")
+def reviewsData(stallId:str):
+    return getHSReviewStats(stallId)

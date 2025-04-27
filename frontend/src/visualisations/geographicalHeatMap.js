@@ -74,14 +74,14 @@ const GeographicalHeatmap = () => {
       );
 
       heatLayerRef.current = L.heatLayer(heatmapData, {
-        radius: 20,
+        radius: 25,
         blur: 30,
         maxZoom: 17,
         max: 1,
         gradient: {
-          0.25: 'blue',
-          0.6: 'lime',
-          0.8: 'orange',
+          0.15: 'blue',
+          0.5: 'lime',
+          0.75: 'orange',
           1.0: 'red',
         },
       }).addTo(mapRef.current);

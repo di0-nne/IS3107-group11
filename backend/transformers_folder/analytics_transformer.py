@@ -69,6 +69,7 @@ def transform_hc_geographical_data():
     geographical_hc_db.insert_many(output)
 
 
+
 def transform_hs_review_stats():
     
     # to choose either one
