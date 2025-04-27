@@ -168,15 +168,15 @@ const GeographicalRegions = () => {
 
                 const allStalls = regionData.flatMap(c => 
                     (c.top3_stalls || []).map(stall => ({
-                        stallName: stall[0],
-                        rating: stall[1],
+                        stallName: stall.stall_name,
+                        rating: stall.rating,
                         centreName: c.name,
                     }))
                 );
                 
                 const sortedStalls = allStalls.sort((a, b) => b.rating - a.rating);
                 const overallTop3 = sortedStalls.slice(0, 3);
-                console.log(best.top3_stalls)
+                console.log(overallTop3)
 
                 output[region] = {
                     bestCentre: best.name,
@@ -291,10 +291,10 @@ const GeographicalRegions = () => {
                     </thead>
                     <tbody>
                         {Array.isArray(regionSpecific[selectedRegion].top3Stalls) ? (
-                        regionSpecific[selectedRegion].top3Stalls.map(([stall, rating], index) => (
+                        regionSpecific[selectedRegion].top3Stalls.map((stall, index) => (
                             <tr key={index}>
-                            <td className="table-cell">{stall}</td>
-                            <td className="table-cell">{rating}</td>
+                            <td className="table-cell">{stall.stall_name}</td>
+                            <td className="table-cell">{stall.rating}</td>
                             </tr>
                         ))
                         ) : (

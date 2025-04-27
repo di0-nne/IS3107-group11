@@ -49,3 +49,23 @@ class User_History(BaseModel):
     user_id: str
     stall_id: str
     visit_timestamp: datetime
+    
+class Geographical_HC_data(BaseModel):
+    centre_id: float
+    name: str
+    latitude: str
+    longitude: str
+    avg_rating: float
+    stalls: float
+    top3_stalls: object
+    
+
+class HC_Review_Stats(BaseModel):
+    stall_id: str
+    stall_name: str
+    no_of_reviews: float
+    no_of_authors: float
+    avg_user_rating: float
+    rating_sd: float
+    avg_no_of_visits: float
+    top_10_words: object
