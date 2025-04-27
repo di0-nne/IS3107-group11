@@ -120,7 +120,7 @@ def transform_hs_review_stats():
             all_words.extend(words)
         
         word_counts = Counter(word for word in all_words if word not in filler_words)
-        top_10_words = [word for word, count in word_counts.most_common(10)]
+        top_10_words = word_counts.most_common(10)
         
         stats = {
             'stall_id': stall_id,
