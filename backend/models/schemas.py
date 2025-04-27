@@ -1,4 +1,5 @@
-# TODO: do the same for Hawker Stall and User
+import math
+
 def get_hawker_centre(Hawker_Centre) -> dict:
     return {
         "id": str(Hawker_Centre["_id"]),
@@ -59,7 +60,7 @@ def get_reviews(Reviews) -> dict:
         "author_url": Reviews["author_url"],
         "author": Reviews["author"],
         "stall_id": Reviews["stall_id"],
-        "rating": Reviews["rating"],
+        "rating": str(Reviews["rating"]),
         "review_text": Reviews["review_text"],
         "relative_time": Reviews["relative_time"]
     }
@@ -78,3 +79,34 @@ def get_user_history(User_History) -> dict:
     
 def get_user_history_list(User_History) -> list:
     return [get_user_history(uh) for uh in User_History]
+
+def get_geographical_hc_data(Geographical_HC_Data) -> dict:
+    return {
+        "id": str(Geographical_HC_Data["_id"]),
+        "centre_id": Geographical_HC_Data["centre_id"],
+        "name": Geographical_HC_Data["name"],
+        "latitude": Geographical_HC_Data["latitude"],
+        "longitude": Geographical_HC_Data["longitude"],
+        "avg_rating": Geographical_HC_Data["avg_rating"],
+        "stalls": Geographical_HC_Data["stalls"],
+        "top3_stalls": Geographical_HC_Data["top3_stalls"]
+    }
+    
+def get_geographical_hc_data_list(Geographical_HC_Data) -> list:
+    return [get_geographical_hc_data(g) for g in Geographical_HC_Data]
+
+def get_hs_review_stats(HS_Review_Stats) -> dict:
+    return {
+        "id": str(HS_Review_Stats["_id"]),
+        "stall_id": HS_Review_Stats["stall_id"],
+        "stall_name": HS_Review_Stats["stall_name"],
+        "no_of_reviews": HS_Review_Stats["no_of_reviews"],
+        "no_of_authors": HS_Review_Stats["no_of_authors"],
+        "avg_user_rating": HS_Review_Stats["avg_user_rating"],
+        "rating_sd": HS_Review_Stats["rating_sd"],
+        "avg_no_of_visits": HS_Review_Stats["avg_no_of_visits"],
+        "top_10_words": HS_Review_Stats["top_10_words"]
+    }
+    
+def get_hs_review_stats_list(HS_Review_Stats) -> list:    
+    return [get_hs_review_stats(h) for h in HS_Review_Stats]
