@@ -1,12 +1,19 @@
 import GeographicalRegions from './visualisations/geographicalRegions';
 import GeographicalHeatmap from './visualisations/geographicalHeatMap';
+import ReviewStats from './visualisations/reviewStats';
+import CleaningGanttChart from './visualisations/cleaningSched';
 import './App.css';
 
 function App() {
   return (
     <div className="App">
-      <GeographicalRegions />
-      <GeographicalHeatmap />
+      <CleaningGanttChart />
+      <ReviewStats />
+      <GeographicalRegions /> <hr />
+      <GeographicalHeatmap /> <hr />
+      <br />
+      <br />
+      <br />
     </div>
   );
 }

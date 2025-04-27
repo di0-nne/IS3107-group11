@@ -20,6 +20,7 @@ def get_cleaning_schedule(Cleaning_Schedule) -> dict:
         "id": str(Cleaning_Schedule["_id"]),
         "schedule_id": str(Cleaning_Schedule["schedule_id"]), #or we can use auto-generated _id
         "centre_id": Cleaning_Schedule["centre_id"],
+        "centre_name": Cleaning_Schedule["centre_name"],
         "cleaning_quarter": Cleaning_Schedule["cleaning_quarter"],
         "cleaning_startdate": Cleaning_Schedule["cleaning_startdate"],
         "cleaning_enddate": Cleaning_Schedule["cleaning_enddate"],
