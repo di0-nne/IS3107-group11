@@ -14,7 +14,7 @@ def calculate_standard_deviation(ratings, mean):
 
 def clean_text(text):
     """Helper function to clean and tokenize review text."""
-    text = text.lower()
+    text = str(text).lower()
     text = text.translate(str.maketrans('', '', string.punctuation))
     return text.split()
 
@@ -26,14 +26,14 @@ def transform_hc_geographical_data():
         'name': 1,
         'latitude': 1,
         'longitude': 1
-    }))
+    }))   # remove before submission
     
     stalls = list(hawker_stall_db.find({}, {
         '_id': 0,
         'centre_id': 1,
         'name': 1,
         'rating': 1
-    }))
+    }))   # remove before submission
 
     centre_ratings = defaultdict(list)
     stall_ratings = defaultdict(list)
@@ -72,7 +72,7 @@ def transform_hc_geographical_data():
 def transform_hs_review_stats():
     
     # to choose either one
-    stalls = getHawkerStalls()
+    stalls = getHawkerStalls()  # remove before submission
     # stalls = getHawkerStallByIds(["ChIJVYpDvb8b2jERnf4SUGQIN4A","ChIJX9Gg9K8b2jEREH0a-0yVcGc", "ChIJEQSoKWAZ2jERbjFv-zHyLRo",
     #                             "ChIJRRxyTrUZ2jERWlYbp4FdxKk","ChIJkeXybmAZ2jER1wI3s3SBPRI", "ChIJ82mn4sIb2jERgXdSpagSZUg",
     #                             "ChIJM0fGcO4b2jERfL3KacFWHPU","ChIJgfhr2lcb2jERAHIZ1f8N-Xg", "ChIJRR6-XAob2jERDVQYlQfj4gA",
@@ -98,7 +98,7 @@ def transform_hs_review_stats():
         hs_review_stats_db.delete_one({"stall_id": stall['stall_id']})
         
         stall_id = stall['stall_id']
-        reviews_for_stall = getReviewsById(stall_id)
+        reviews_for_stall = getReviewsById(stall_id) 
         stall_to_reviews[stall_id] = reviews_for_stall
         
         unique_authors = set()

@@ -28,7 +28,7 @@ def extract_hawker_centres():
 
 
 def load_hawker_centres(df):
-    # db.hawker_centre.delete_many({})
+    db.hawker_centre.delete_many({})
     records = []
 
     for index, row in df.iterrows():

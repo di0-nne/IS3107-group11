@@ -14,7 +14,7 @@ class NGCFRecommender:
         embedding_dim: int = 64,
         layers: list = [64, 64],
         lr: float = 1e-3,
-        epochs: int = 40,
+        epochs: int = 40, 
         device: str = None
     ):
         self.embedding_dim = embedding_dim
@@ -60,7 +60,7 @@ class NGCFRecommender:
         stalls: pd.DataFrame,
         interactions: pd.DataFrame,
         min_rating: int = 4,
-        min_interactions: int = 1
+        min_interactions: int = 10
     ) -> Tuple[pd.DataFrame, pd.DataFrame]:
         
         # rename and filter
@@ -132,14 +132,15 @@ class NGCFRecommender:
 
         # evaluation
         pool_sizes = [50, 100, 200, 500, 1000, 2000, n_items]
+
         ks = [1, 2, 3, 5]
         metrics = {ps: {k: {'hit': [], 'precision': [], 'recall': [], 'f1': []}
                         for k in ks} for ps in pool_sizes}
 
         for user in eligible:
             if user not in uenc.classes_:
-                continue  # skip unseen users
-            
+                continue  # skip unseen users    # Changed Code
+
             uid = uenc.transform([user])[0]
             test_i = [ienc.transform([pid])[0]
                       for pid in test_sets[user] if pid in ienc.classes_]

@@ -44,7 +44,7 @@ def load_cleaning_schedules():
                 validated = Cleaning_Schedule(
                     schedule_id=str(uuid.uuid4()),  # generates a unique schedule_id
                     centre_id=centre_id,
-                    stall_name= row.get("name"),
+                    centre_name= row.get("name"),
                     cleaning_quarter=quarter.upper(),
                     cleaning_startdate=start,
                     cleaning_enddate=end,
@@ -53,6 +53,7 @@ def load_cleaning_schedules():
                 records.append(validated.model_dump())  # convert pydantic model to regular python dictionary
 
     if records:
+        db.cleaning_schedule.delete_many({})
         db.cleaning_schedule.insert_many(records)
         print(f"Inserted {len(records)} cleaning schedules into MongoDB.")
     else:

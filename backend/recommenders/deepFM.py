@@ -16,8 +16,8 @@ class DeepFMRecommender:
         hidden_dims: list = [64, 32],
         lr: float = 1e-3,
         weight_decay: float = 1e-5,
-        epochs: int = 1000,
-        batch_size: int = 1024,
+        epochs: int = 1000, 
+        batch_size: int = 1024,  # chnage before submission
         device: str = None
     ):
         self.embedding_dim = embedding_dim
@@ -57,7 +57,7 @@ class DeepFMRecommender:
         stalls: pd.DataFrame,
         interactions: pd.DataFrame,
         min_rating: int = 4,
-        min_interactions: int = 1
+        min_interactions: int = 10
     ) -> Tuple[pd.DataFrame, pd.DataFrame]:
         
         # prepare identifiers

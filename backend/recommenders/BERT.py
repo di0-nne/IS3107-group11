@@ -14,7 +14,7 @@ class BERTRecommender:
         stalls: pd.DataFrame,
         interactions: pd.DataFrame,
         min_rating: int = 4,
-        min_interactions: int = 1
+        min_interactions: int = 10
     ) -> Tuple[pd.DataFrame, pd.DataFrame]:
         
         # filter interactions by rating and available stalls
@@ -49,7 +49,7 @@ class BERTRecommender:
             interactions
             .groupby('stall_id')['review_text']
             # .apply(lambda texts: ' '.join(texts))
-            .apply(lambda texts: ' '.join(str(t) if t is not None else '' for t in texts))
+            .apply(lambda texts: ' '.join(str(t) if t is not None else '' for t in texts))  # Changed COde
             .rename('all_reviews')
             .reset_index()
             .merge(stalls, on='stall_id', how='inner')
