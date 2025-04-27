@@ -12,10 +12,12 @@ from services.get_cleaning_schedules import load_cleaning_schedules
 from services.get_hawker_centres import extract_hawker_centres, load_hawker_centres
 from services.get_hawker_stalls import get_hawkerstalls_df
 from services.get_reviews import get_all_reviews
-from transformers.transform_datasets import transform_hawkers, transform_reviews, transform_stalls
-from transformers.normalisation import normalise_stalls, normalise_reviews
-from transformers.analytics_transformer import transform_hc_geographical_data, transform_hs_review_stats
-from recommenders.BERT import BERTRecommender, NGCFRecommender, DeepFMRecommender
+from transformers_folder.transform_datasets import transform_hawkers, transform_reviews, transform_stalls
+from transformers_folder.normalisation import normalise_stalls, normalise_reviews
+from recommenders.BERT import BERTRecommender
+from recommenders.deepFM import DeepFMRecommender
+from recommenders.NGCF import NGCFRecommender
+from transformers_folder.analytics_transformer import transform_hc_geographical_data, transform_hs_review_stats
 from database import db
 import pandas as pd
 
@@ -37,8 +39,10 @@ def load_hawker_centres_task(**kwargs):
     load_hawker_centres(df)
 
 def extract_hawker_stalls_task(**kwargs):
-    single_centre = list(db.hawker_centre.find().limit(1))
-    df = pd.DataFrame(single_centre)
+    # Pull the transformed hawker centres from XCom
+    transformed_json = kwargs['ti'].xcom_pull(key='transformed_hawker_centres')
+    df = pd.read_json(transformed_json)
+    # df = df.head(20)   # remove before submission
     stalls_df = get_hawkerstalls_df(df)
     kwargs['ti'].xcom_push(key='raw_stalls', value=stalls_df.to_json())
 
@@ -53,11 +57,11 @@ def transform_hawker_stalls_task(**kwargs):
 def load_hawker_stalls_task(**kwargs):
     stalls_json = kwargs['ti'].xcom_pull(key='transformed_stalls')
     df = pd.read_json(stalls_json)
-    db.hawker_stall.insert_many(df.to_dict(orient="records"))
+    db.hawker_stall.insert_many(df.to_dict(orient="records")) # change before submission
 
 def extract_reviews_task(**kwargs):
     df = pd.read_json(kwargs['ti'].xcom_pull(key='transformed_stalls'))
-    df = df.head(10)  # Optional: Limit number of stalls
+    # df = df.head(10)  # Optional: Limit number of stalls    # remove before submission
     all_reviews_df = get_all_reviews(df)
     kwargs['ti'].xcom_push(key='raw_reviews', value=all_reviews_df.to_json())
 
@@ -70,7 +74,7 @@ def transform_reviews_task(**kwargs):
 def load_reviews_task(**kwargs):
     reviews_json = kwargs['ti'].xcom_pull(key='transformed_reviews')
     df = pd.read_json(reviews_json)
-    db.reviews.insert_many(df.to_dict(orient="records"))
+    db.reviews.insert_many(df.to_dict(orient="records"))  # change before submission
     
 def transform_analytics(**kwargs):
     print("transforming hawker centre data for geographical analysis")
@@ -79,17 +83,25 @@ def transform_analytics(**kwargs):
     transform_hs_review_stats()
 
 def transform_recommenders(**kwargs):
-    stalls_json = kwargs['ti'].xcom_pull(key='transformed_stalls')
-    stalls_df = pd.read_json(stalls_json)
+    # stalls_json = kwargs['ti'].xcom_pull(key='transformed_stalls')
+    stalls_cursor = db.hawker_stall.find({})
+    stalls_list = list(stalls_cursor)
+    stalls_df = pd.DataFrame(stalls_list)
     normalised_stalls_df = normalise_stalls(stalls_df)
+    if '_id' in normalised_stalls_df.columns:
+        normalised_stalls_df = normalised_stalls_df.drop(columns=['_id'])   # remove if required
     kwargs['ti'].xcom_push(key='normalised_stalls', value=normalised_stalls_df.to_json())
 
-    reviews_json = kwargs['ti'].xcom_pull(key='transformed_reviews')
-    reviews_df = pd.read_json(reviews_json)
+    # reviews_json = kwargs['ti'].xcom_pull(key='transformed_reviews')
+    reviews_cursor = db.reviews.find({})
+    reviews_list = list(reviews_cursor)
+    reviews_df = pd.DataFrame(reviews_list)
     normalised_reviews_df = normalise_reviews(reviews_df)
+    if '_id' in normalised_reviews_df.columns:
+        normalised_reviews_df = normalised_reviews_df.drop(columns=['_id'])   # remove if required
     kwargs['ti'].xcom_push(key='normalised_reviews', value=normalised_reviews_df.to_json())
 
-def run_recommenders(**kwargs):
+def run_bert_recommender(**kwargs):
     stalls_json = kwargs['ti'].xcom_pull(key='normalised_stalls')
     stalls = pd.read_json(stalls_json)
     reviews_json = kwargs['ti'].xcom_pull(key='normalised_reviews')
@@ -102,12 +114,26 @@ def run_recommenders(**kwargs):
     db.bert_hitrate.insert_many(hr_records)
     db.bert_metrics.insert_many(mr_records)
 
+
+def run_ngcf_recommender(**kwargs):
+    stalls_json = kwargs['ti'].xcom_pull(key='normalised_stalls')
+    stalls = pd.read_json(stalls_json)
+    reviews_json = kwargs['ti'].xcom_pull(key='normalised_reviews')
+    reviews = pd.read_json(reviews_json)
+
     NGCFrecommender = NGCFRecommender()
     hitrate_df, metric_df = NGCFrecommender.run(stalls, reviews)
     hr_records = hitrate_df.to_dict(orient='records')
     mr_records = metric_df.to_dict(orient='records')
     db.ngcf_hitrate.insert_many(hr_records)
     db.ngcf_metrics.insert_many(mr_records)
+
+
+def run_deepfm_recommender(**kwargs):
+    stalls_json = kwargs['ti'].xcom_pull(key='normalised_stalls')
+    stalls = pd.read_json(stalls_json)
+    reviews_json = kwargs['ti'].xcom_pull(key='normalised_reviews')
+    reviews = pd.read_json(reviews_json)
 
     DeepFMrecommender = DeepFMRecommender()
     hitrate_df, metric_df = DeepFMrecommender.run(stalls, reviews)
@@ -118,7 +144,7 @@ def run_recommenders(**kwargs):
 
 
 with DAG(
-    dag_id='update_hawker_data',
+    dag_id='data_pipeline_dag',
     start_date = datetime(2025, 1, 1),
     description='ETL pipeline to load hawker data into MongoDB',
     schedule_interval='@weekly',
@@ -143,10 +169,13 @@ with DAG(
     t5 = PythonOperator(task_id='transform_analytics', python_callable=transform_analytics)
     
     t6a = PythonOperator(task_id='transform_recommenders', python_callable=transform_recommenders)
-    t6b = PythonOperator(task_id='run_recommenders', python_callable=run_recommenders)
+
+    t6b = PythonOperator(task_id='run_bert_recommender', python_callable=run_bert_recommender)
+    t6c = PythonOperator(task_id='run_ngcf_recommender', python_callable=run_ngcf_recommender)
+    t6d = PythonOperator(task_id='run_deepfm_recommender', python_callable=run_deepfm_recommender)
 
 
-    t1 >> t2a >> t2b >> t2c >> t3a >> t3b >> t3c >> t4a >> t4b >> t4c
+    [t1, t2a] >> t2b >> [t2c, t3a] >> t3b >> [t3c, t4a] >> t4b >> t4c
     t4c >> [t5, t6a]
-    t6a >> t6b
+    t6a >> [t6b, t6c, t6d]
     
