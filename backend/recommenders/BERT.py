@@ -14,7 +14,7 @@ class BERTRecommender:
         stalls: pd.DataFrame,
         interactions: pd.DataFrame,
         min_rating: int = 4,
-        min_interactions: int = 10
+        min_interactions: int = 1
     ) -> Tuple[pd.DataFrame, pd.DataFrame]:
         
         # filter interactions by rating and available stalls

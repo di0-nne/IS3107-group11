@@ -36,7 +36,7 @@ def load_hawker_centres_task(**kwargs):
     load_hawker_centres(df)
 
 def extract_hawker_stalls_task(**kwargs):
-    limit_centre = list(db.hawker_centre.find().limit(5))
+    limit_centre = list(db.hawker_centre.find().limit(30))
     df = pd.DataFrame(limit_centre)
     stalls_df = get_hawkerstalls_df(df)
     kwargs['ti'].xcom_push(key='raw_stalls', value=stalls_df.to_json())
@@ -56,7 +56,7 @@ def load_hawker_stalls_task(**kwargs):
 
 def extract_reviews_task(**kwargs):
     df = pd.read_json(kwargs['ti'].xcom_pull(key='transformed_stalls'))
-    df = df.head(20)  # Optional: Limit number of stalls
+    # df = df.head(100)  # Optional: Limit number of stalls
     all_reviews_df = get_all_reviews(df)
     kwargs['ti'].xcom_push(key='raw_reviews', value=all_reviews_df.to_json())
 
