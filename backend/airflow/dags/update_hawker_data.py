@@ -13,8 +13,10 @@ from services.get_hawker_centres import extract_hawker_centres, load_hawker_cent
 from services.get_hawker_stalls import get_hawkerstalls_df
 from services.get_reviews import get_all_reviews
 from services.transform_datasets import transform_hawkers, transform_reviews, transform_stalls
-from transformers.normalisation import normalise_stalls, normalise_reviews
-from recommenders.BERT import BERTRecommender, NGCFRecommender, DeepFMRecommender
+from transformers_folder.normalisation import normalise_stalls, normalise_reviews
+from recommenders.BERT import BERTRecommender
+from recommenders.deepFM import DeepFMRecommender
+from recommenders.NGCF import NGCFRecommender
 from database import db
 import pandas as pd
 
@@ -36,8 +38,8 @@ def load_hawker_centres_task(**kwargs):
     load_hawker_centres(df)
 
 def extract_hawker_stalls_task(**kwargs):
-    single_centre = list(db.hawker_centre.find().limit(1))
-    df = pd.DataFrame(single_centre)
+    limit_centre = list(db.hawker_centre.find().limit(1))
+    df = pd.DataFrame(limit_centre)
     stalls_df = get_hawkerstalls_df(df)
     kwargs['ti'].xcom_push(key='raw_stalls', value=stalls_df.to_json())
 
@@ -52,11 +54,11 @@ def transform_hawker_stalls_task(**kwargs):
 def load_hawker_stalls_task(**kwargs):
     stalls_json = kwargs['ti'].xcom_pull(key='transformed_stalls')
     df = pd.read_json(stalls_json)
-    db.hawker_stall.insert_many(df.to_dict(orient="records"))
+    db.fake_hawker_stall.insert_many(df.to_dict(orient="records")) # change before submission
 
 def extract_reviews_task(**kwargs):
     df = pd.read_json(kwargs['ti'].xcom_pull(key='transformed_stalls'))
-    df = df.head(10)  # Optional: Limit number of stalls
+    # df = df.head(10)  # Optional: Limit number of stalls
     all_reviews_df = get_all_reviews(df)
     kwargs['ti'].xcom_push(key='raw_reviews', value=all_reviews_df.to_json())
 
@@ -69,17 +71,25 @@ def transform_reviews_task(**kwargs):
 def load_reviews_task(**kwargs):
     reviews_json = kwargs['ti'].xcom_pull(key='transformed_reviews')
     df = pd.read_json(reviews_json)
-    db.reviews.insert_many(df.to_dict(orient="records"))
+    db.fake_reviews.insert_many(df.to_dict(orient="records"))  # change before submission
 
 def transform_recommenders(**kwargs):
-    stalls_json = kwargs['ti'].xcom_pull(key='transformed_stalls')
-    stalls_df = pd.read_json(stalls_json)
+    # stalls_json = kwargs['ti'].xcom_pull(key='transformed_stalls')
+    stalls_cursor = db.hawker_stall.find({})
+    stalls_list = list(stalls_cursor)
+    stalls_df = pd.DataFrame(stalls_list)
     normalised_stalls_df = normalise_stalls(stalls_df)
+    if '_id' in normalised_stalls_df.columns:
+        normalised_stalls_df = normalised_stalls_df.drop(columns=['_id'])   # remove if required
     kwargs['ti'].xcom_push(key='normalised_stalls', value=normalised_stalls_df.to_json())
 
-    reviews_json = kwargs['ti'].xcom_pull(key='transformed_reviews')
-    reviews_df = pd.read_json(reviews_json)
+    # reviews_json = kwargs['ti'].xcom_pull(key='transformed_reviews')
+    reviews_cursor = db.reviews.find({})
+    reviews_list = list(reviews_cursor)
+    reviews_df = pd.DataFrame(reviews_list)
     normalised_reviews_df = normalise_reviews(reviews_df)
+    if '_id' in normalised_reviews_df.columns:
+        normalised_reviews_df = normalised_reviews_df.drop(columns=['_id'])   # remove if required
     kwargs['ti'].xcom_push(key='normalised_reviews', value=normalised_reviews_df.to_json())
 
 def run_recommenders(**kwargs):

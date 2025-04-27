@@ -60,7 +60,7 @@ class NGCFRecommender:
         stalls: pd.DataFrame,
         interactions: pd.DataFrame,
         min_rating: int = 4,
-        min_interactions: int = 10
+        min_interactions: int = 1
     ) -> Tuple[pd.DataFrame, pd.DataFrame]:
         
         # rename and filter
@@ -137,6 +137,9 @@ class NGCFRecommender:
                         for k in ks} for ps in pool_sizes}
 
         for user in eligible:
+            if user not in uenc.classes_:
+                continue  # skip unseen users
+            
             uid = uenc.transform([user])[0]
             test_i = [ienc.transform([pid])[0]
                       for pid in test_sets[user] if pid in ienc.classes_]
