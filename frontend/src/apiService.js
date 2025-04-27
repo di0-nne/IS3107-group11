@@ -2,6 +2,8 @@ import axiosClient from './axiosClient';
 
 export const getGeographicalData = () => axiosClient.get('/geographicalData');
 
+export const getReviewStats = () => axiosClient.get('/reviewStats');
+
 // export const postUser = (userData) =>
 //     axiosClient.post('/geographicalData', userData);
 
