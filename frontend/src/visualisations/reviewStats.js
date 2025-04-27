@@ -52,13 +52,12 @@ const ReviewStats = () => {
         try {
             const response = await getReviewStatsForStall(selectedOption.value);
             setStallData(response.data[0]);
-            console.log(response.data);
         } catch (error) {
             console.error('Error fetching review stats:', error);
         }
     };
 
-    const colors = ['#143059', '#2F6B9A', '#82a6c2'];
+    const colors = ['#143059', '#5f76b3', '#7297b0'];
 
     const fontScale = stallData?.top_10_words ? scaleLog({
         domain: [

@@ -1,26 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { getGeographicalData } from '../apiService';
 import ReactApexChart from 'react-apexcharts';
-
-const assignRegion = (lat, lon) => {
-    const centralLat = 1.3521;
-    const centralLon = 103.8198;
-    const centralRadius = 0.02; // small threshold for 'central'
-
-    if (Math.abs(lat - centralLat) <= centralRadius && Math.abs(lon - centralLon) <= centralRadius) {
-            return 'Central';
-    } else if (lat > centralLat + centralRadius) {
-        if (lon > centralLon) return 'NE';
-        else return 'NW';
-    } else if (lat < centralLat - centralRadius) {
-        if (lon > centralLon) return 'SE';
-        else return 'SW';
-    } else {
-        if (lat > centralLat) return 'North';
-        else return 'South';
-    }
-};
-
+import { assignRegion, regions } from '../utils';
 
 const GeographicalRegions = () => {
 
@@ -58,7 +39,6 @@ const GeographicalRegions = () => {
         }
     }, [centres]);
     
-    const regions = ['North', 'South', 'Central', 'NE', 'NW', 'SE', 'SW'];
 
     const calculateRegionStats = () => {
         const stats = [];
@@ -239,7 +219,7 @@ const GeographicalRegions = () => {
                 </tbody>
             </table>
 
-            <h2>Hawker Centre Performance for {selectedRegion}</h2>
+            <h2>Hawker Centre Performance for {selectedRegion} Region</h2>
             <select style={{marginBottom:"10px"}} value={selectedRegion} onChange={(e) => setSelectedRegion(e.target.value)}>
                 {regions.map((region) => (
                     <option key={region} value={region}>

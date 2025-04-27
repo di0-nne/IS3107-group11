@@ -15,6 +15,7 @@ class Hawker_Centre(BaseModel):
 class Cleaning_Schedule(BaseModel):
     schedule_id: str
     centre_id: float
+    centre_name: str
     cleaning_quarter: str
     cleaning_startdate: datetime
     cleaning_enddate: datetime

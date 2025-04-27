@@ -35,6 +35,7 @@ def reviews(stallId: str):
 @router.get("/geographicalData")
 def geographicalData():
     return getGeographicalData()
+    # return transform_hc_geographical_data()
 
 @router.get("/reviewsDataForStall")
 def reviewsData(stallId:str):
