@@ -19,7 +19,7 @@ def clean_text(text):
     return text.split()
 
 
-def geographical_data():
+def transform_hc_geographical_data():
     centres = list(hawker_centre_db.find({}, {
         '_id': 0,
         'centre_id': 1,
@@ -69,7 +69,7 @@ def geographical_data():
     geographical_hc_db.insert_many(output)
 
 
-def review_stats_per_stall():
+def transform_hs_review_stats():
     
     # to choose either one
     stalls = getHawkerStalls()
