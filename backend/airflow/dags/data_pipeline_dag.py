@@ -42,7 +42,6 @@ def extract_hawker_stalls_task(**kwargs):
     # Pull the transformed hawker centres from XCom
     transformed_json = kwargs['ti'].xcom_pull(key='transformed_hawker_centres')
     df = pd.read_json(transformed_json)
-    # df = df.head(20)   # remove before submission
     stalls_df = get_hawkerstalls_df(df)
     kwargs['ti'].xcom_push(key='raw_stalls', value=stalls_df.to_json())
 
@@ -57,11 +56,10 @@ def transform_hawker_stalls_task(**kwargs):
 def load_hawker_stalls_task(**kwargs):
     stalls_json = kwargs['ti'].xcom_pull(key='transformed_stalls')
     df = pd.read_json(stalls_json)
-    db.hawker_stall.insert_many(df.to_dict(orient="records")) # change before submission
+    db.hawker_stall.insert_many(df.to_dict(orient="records"))
 
 def extract_reviews_task(**kwargs):
     df = pd.read_json(kwargs['ti'].xcom_pull(key='transformed_stalls'))
-    # df = df.head(10)  # Optional: Limit number of stalls    # remove before submission
     all_reviews_df = get_all_reviews(df)
     kwargs['ti'].xcom_push(key='raw_reviews', value=all_reviews_df.to_json())
 
@@ -74,7 +72,7 @@ def transform_reviews_task(**kwargs):
 def load_reviews_task(**kwargs):
     reviews_json = kwargs['ti'].xcom_pull(key='transformed_reviews')
     df = pd.read_json(reviews_json)
-    db.reviews.insert_many(df.to_dict(orient="records"))  # change before submission
+    db.reviews.insert_many(df.to_dict(orient="records"))
     
 def transform_analytics(**kwargs):
     print("transforming hawker centre data for geographical analysis")
@@ -83,7 +81,6 @@ def transform_analytics(**kwargs):
     transform_hs_review_stats()
 
 def transform_recommenders(**kwargs):
-    # stalls_json = kwargs['ti'].xcom_pull(key='transformed_stalls')
     stalls_cursor = db.hawker_stall.find({})
     stalls_list = list(stalls_cursor)
     stalls_df = pd.DataFrame(stalls_list)
