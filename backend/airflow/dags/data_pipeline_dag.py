@@ -72,7 +72,7 @@ def load_reviews_task(**kwargs):
     df = pd.read_json(reviews_json)
     db.reviews.insert_many(df.to_dict(orient="records"))
     
-def transform_analytics():
+def transform_analytics(**kwargs):
     print("transforming hawker centre data for geographical analysis")
     transform_hc_geographical_data()
     print("transforming hawker stall review data")
@@ -146,5 +146,7 @@ with DAG(
     t6b = PythonOperator(task_id='run_recommenders', python_callable=run_recommenders)
 
 
-    t1 >> t2a >> t2b >> t2c >> t3a >> t3b >> t3c >> t4a >> t4b >> t4c >> t5 >> t6a >> t6b
+    t1 >> t2a >> t2b >> t2c >> t3a >> t3b >> t3c >> t4a >> t4b >> t4c
+    t4c >> [t5, t6a]
+    t6a >> t6b
     
